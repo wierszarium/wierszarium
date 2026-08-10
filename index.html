@@ -326,6 +326,192 @@
     white-space:nowrap;
   }
 
+  /* ===================== HAMBURGER MENU (tylko desktop) ===================== */
+  .hamburger-btn{display:none}
+  @media(min-width:721px){
+    .hamburger-btn{
+      display:flex;align-items:center;justify-content:center;
+      width:42px;height:42px;padding:0;margin-right:12px;flex-shrink:0;
+      background:none;border:1px solid rgba(243,234,214,.25);border-radius:var(--r-sm);
+      color:var(--parchment);cursor:pointer;
+      transition:border-color .25s var(--ease),background .25s var(--ease);
+    }
+    .hamburger-btn:hover{border-color:var(--gold-soft);background:rgba(201,162,39,.1)}
+    .hamburger-btn svg{width:20px;height:20px}
+  }
+  /* overlay */
+  .hm-overlay{
+    position:fixed;inset:0;z-index:9000;
+    background:rgba(0,0,0,.5);backdrop-filter:blur(3px);
+    opacity:0;pointer-events:none;
+    transition:opacity .3s var(--ease);
+  }
+  .hm-overlay.open{opacity:1;pointer-events:auto}
+  /* panel menu — oryginalny styl */
+  .hm-panel{
+    position:fixed;top:0;left:0;bottom:0;z-index:9001;
+    width:min(360px,85vw);
+    background:linear-gradient(180deg,#1b2340 0%,#12172c 100%);
+    border-right:2px solid rgba(201,162,39,.3);
+    box-shadow:4px 0 30px rgba(0,0,0,.5);
+    transform:translateX(-100%);
+    transition:transform .35s var(--ease);
+    display:flex;flex-direction:column;
+    overflow-y:auto;
+  }
+  .hm-overlay.open .hm-panel{transform:translateX(0)}
+  .hm-header{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:22px 24px 16px;border-bottom:1px solid rgba(201,162,39,.2);
+  }
+  .hm-header .hm-title{
+    font-family:'Fraunces',serif;font-size:18px;color:var(--parchment);
+  }
+  .hm-close{
+    width:36px;height:36px;display:flex;align-items:center;justify-content:center;
+    background:none;border:1px solid rgba(243,234,214,.2);border-radius:var(--r-sm);
+    color:var(--parchment);cursor:pointer;font-size:18px;
+    transition:border-color .2s,background .2s;
+  }
+  .hm-close:hover{border-color:var(--gold-soft);background:rgba(201,162,39,.1)}
+  .hm-nav{list-style:none;margin:0;padding:12px 0;flex:1}
+  .hm-nav li{margin:0;position:relative}
+  .hm-nav a, .hm-nav button{
+    display:flex;align-items:center;gap:14px;width:100%;
+    padding:14px 24px;text-align:left;
+    background:none;border:none;color:var(--parchment);
+    font-family:'Literata',serif;font-size:15px;
+    cursor:pointer;text-decoration:none;
+    transition:background .2s var(--ease),color .2s var(--ease);
+  }
+  .hm-nav a:hover, .hm-nav button:hover{
+    background:rgba(201,162,39,.08);color:var(--gold-soft);
+  }
+  .hm-nav .hm-iko{font-size:20px;width:28px;text-align:center;flex-shrink:0}
+  .hm-nav .hm-sep{
+    height:1px;margin:8px 24px;
+    background:linear-gradient(90deg,transparent,rgba(201,162,39,.25),transparent);
+  }
+  /* strzałka aktywnego punktu */
+  .hm-nav li.active::after{
+    content:'';position:absolute;right:-1px;top:50%;transform:translateY(-50%);
+    width:0;height:0;
+    border-top:8px solid transparent;border-bottom:8px solid transparent;
+    border-right:8px solid #161c36;
+    filter:drop-shadow(-2px 0 3px rgba(201,162,39,.4));
+  }
+  .hm-nav li.active a, .hm-nav li.active button{
+    color:var(--gold-soft);
+    background:rgba(201,162,39,.1);
+  }
+  .hm-footer{
+    padding:16px 24px;border-top:1px solid rgba(201,162,39,.15);
+    font-family:'JetBrains Mono',monospace;font-size:10px;
+    color:var(--parchment-dim);opacity:.4;letter-spacing:.04em;
+  }
+
+  /* panel treści — wysuwa się obok menu */
+  .hm-content{
+    position:fixed;top:0;bottom:0;z-index:9000;
+    left:min(360px,85vw);
+    width:calc(100vw - 2 * min(360px,85vw) - 30px);
+    background:linear-gradient(180deg,#161c36 0%,#10152a 100%);
+    box-shadow:none;
+    transform:translateX(-200%);
+    transition:transform .35s var(--ease);
+    display:flex;flex-direction:column;
+    overflow-y:auto;
+  }
+  .hm-content.open{transform:translateX(0)}
+  .hm-content-header{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:22px 24px 16px;border-bottom:1px solid rgba(201,162,39,.15);
+  }
+  .hm-content-title{
+    font-family:'Fraunces',serif;font-size:20px;color:var(--parchment);
+  }
+  .hm-content-body{
+    padding:24px;flex:1;
+    font-family:'Literata',serif;font-size:15px;line-height:1.7;
+    color:var(--parchment-dim);
+  }
+  .hm-content-body h3{
+    font-family:'Fraunces',serif;font-size:17px;color:var(--parchment);
+    margin:0 0 10px;
+  }
+  .hm-content-body p{margin:0 0 14px}
+
+  /* panel prawy — karty zespołu */
+  .hm-right{
+    position:fixed;top:0;bottom:0;right:0;z-index:9000;
+    width:min(360px,85vw);
+    background:linear-gradient(180deg,#161c36 0%,#10152a 100%);
+    border-left:2px solid rgba(201,162,39,.3);
+    transform:translateX(100%);
+    transition:transform 2s var(--ease);
+    overflow-y:hidden;
+    padding:24px 20px;
+    display:flex;flex-direction:column;gap:20px;
+  }
+  .hm-right.open{transform:translateX(0)}
+
+  .hm-karta{
+    border:1px solid rgba(201,162,39,.25);
+    border-radius:var(--r-md);
+    overflow:hidden;
+    background:rgba(15,15,24,.5);
+    opacity:0;transform:translateY(20px);
+    transition:opacity .8s var(--ease),transform .8s var(--ease);
+  }
+  .hm-right.open .hm-karta{opacity:1;transform:translateY(0)}
+  .hm-right.open .hm-karta[data-karta="1"]{transition-delay:0s}
+  .hm-right.open .hm-karta[data-karta="2"]{transition-delay:1s}
+  /* naprzemienne: 1 prawo — 2 lewo */
+  .hm-karta[data-karta="1"] .hm-karta-foto{margin-left:auto;margin-right:0}
+  .hm-karta[data-karta="2"] .hm-karta-foto{margin-right:auto;margin-left:0}
+  .hm-karta-foto{
+    width:66%;height:180px;
+    background:rgba(15,15,24,.8);
+    border-bottom:2px solid rgba(201,162,39,.3);
+    display:flex;align-items:center;justify-content:center;
+    position:relative;
+    overflow:hidden;
+  }
+  .hm-karta-foto img{
+    width:100%;height:100%;object-fit:cover;
+  }
+  .hm-karta-foto .placeholder{
+    font-size:48px;opacity:.3;
+  }
+  /* neonowa ramka na zdjęciu */
+  .hm-karta-foto::after{
+    content:'';position:absolute;inset:8px;
+    border:2px solid rgba(201,162,39,.4);border-radius:var(--r-sm);
+    box-shadow:0 0 12px rgba(201,162,39,.2), inset 0 0 12px rgba(201,162,39,.1);
+    pointer-events:none;
+  }
+  .hm-karta-info{
+    padding:16px;
+    display:flex;flex-direction:column;gap:8px;
+    border-top:1px solid rgba(201,162,39,.15);
+  }
+  .hm-karta-info .hm-ki-name{
+    font-family:'Literata',serif;font-size:16px;font-style:italic;color:var(--parchment);
+  }
+  .hm-karta-info .hm-ki-role{
+    font-family:'Literata',serif;font-size:14px;font-style:italic;
+    color:var(--gold-soft);opacity:.8;
+  }
+  .hm-karta-info .hm-ki-contact{
+    font-family:'Literata',serif;font-size:14px;font-style:italic;
+    color:var(--parchment-dim);
+  }
+  .hm-karta-info .hm-ki-link a{
+    font-family:'Literata',serif;font-size:14px;font-style:italic;
+    color:var(--gold);text-decoration:none;
+  }
+  .hm-karta-info .hm-ki-link a:hover{text-decoration:underline}
+
   @media(max-width:720px){
     .stage.mode-detail{flex-direction:column;align-items:center;gap:16px}
     .stage.mode-detail .medallion{width:260px;height:260px;margin:0 auto}
@@ -736,10 +922,80 @@
   </div>
 </div>
 
+<!-- ====== PANEL BOCZNY (hamburger, tylko desktop) ====== -->
+<div class="hm-overlay" id="hm-overlay" onclick="zamknijMenu()">
+  <nav class="hm-panel" onclick="event.stopPropagation()">
+    <div class="hm-header">
+      <span class="hm-title">Wierszarium</span>
+      <button class="hm-close" onclick="zamknijMenu()" aria-label="zamknij">✕</button>
+    </div>
+    <ul class="hm-nav" id="hm-nav">
+      <li data-sekcja="o-projekcie"><a href="#" onclick="event.preventDefault();otworzSekcje('o-projekcie')"><span class="hm-iko">📖</span> O projekcie</a></li>
+      <li data-sekcja="pobierz"><a href="#" onclick="event.preventDefault();otworzSekcje('pobierz')"><span class="hm-iko">⬇️</span> Pobierz program</a></li>
+      <li data-sekcja="formularz"><a href="narzedzia.html" target="_blank"><span class="hm-iko">📝</span> Formularz zgłoszeniowy</a></li>
+      <li data-sekcja="edytor-zdjec"><a href="#" onclick="event.preventDefault();otworzSekcje('edytor-zdjec')"><span class="hm-iko">🖼️</span> Edytor zdjęć</a></li>
+      <li><div class="hm-sep"></div></li>
+      <li data-sekcja="jak-to-dziala"><a href="#" onclick="event.preventDefault();otworzSekcje('jak-to-dziala')"><span class="hm-iko">❓</span> Jak to działa</a></li>
+      <li data-sekcja="kontakt"><a href="#" onclick="event.preventDefault();otworzSekcje('kontakt')"><span class="hm-iko">✉️</span> Kontakt</a></li>
+      <li data-sekcja="forum"><a href="#" onclick="event.preventDefault();otworzSekcje('forum')"><span class="hm-iko">💬</span> Forum</a></li>
+      <li><div class="hm-sep"></div></li>
+      <li data-sekcja="kawa"><a href="#" onclick="event.preventDefault();otworzSekcje('kawa')"><span class="hm-iko">☕</span> Postaw kawę</a></li>
+      <li><button onclick="udostepnij()"><span class="hm-iko">🔗</span> Udostępnij / zaproś znajomych</button></li>
+    </ul>
+    <div class="hm-footer">Pod Wielkim Dachem Nieba · wierszarium.pl</div>
+  </nav>
+
+  <!-- panel treści — wysuwa się obok menu -->
+  <div class="hm-content" id="hm-content" onclick="event.stopPropagation()">
+    <div class="hm-content-header">
+      <span class="hm-content-title" id="hm-content-title"></span>
+    </div>
+    <div class="hm-content-body" id="hm-content-body"></div>
+  </div>
+
+  <!-- panel prawy — karty zespołu -->
+  <div class="hm-right" id="hm-right" onclick="event.stopPropagation()">
+    <!-- treść: karty zespołu -->
+    <div id="hm-right-karty">
+      <div style="text-align:center;padding-bottom:8px">
+        <span style="font-family:'Fraunces',serif;font-size:22px;color:var(--gold-soft);text-shadow:0 0 10px rgba(201,162,39,.4),0 0 25px rgba(201,162,39,.15);letter-spacing:.03em;font-style:italic">Poznajmy się !!!</span>
+      </div>
+      <div class="hm-karta" data-karta="1">
+        <div class="hm-karta-foto"><span class="placeholder">👤</span></div>
+        <div class="hm-karta-info">
+          <div class="hm-ki-name">Imię i nazwisko (pseudo)</div>
+          <div class="hm-ki-role">Stanowisko w projekcie</div>
+          <div class="hm-ki-contact">kontakt@email.pl</div>
+          <div class="hm-ki-link"><a href="#">🔗 Link do poezji</a></div>
+        </div>
+      </div>
+      <div class="hm-karta" data-karta="2">
+        <div class="hm-karta-foto"><span class="placeholder">👤</span></div>
+        <div class="hm-karta-info">
+          <div class="hm-ki-name">Imię i nazwisko (pseudo)</div>
+          <div class="hm-ki-role">Stanowisko w projekcie</div>
+          <div class="hm-ki-contact">kontakt@email.pl</div>
+          <div class="hm-ki-link"><a href="#">🔗 Link do poezji</a></div>
+        </div>
+      </div>
+    </div>
+    <!-- treść: podpowiedzi -->
+    <div id="hm-right-hint" style="display:none;height:100%;display:none;align-items:center;justify-content:center;padding:30px;text-align:center">
+      <p id="hm-right-hint-text" style="font-family:'Fraunces',serif;font-size:20px;color:var(--gold-soft);text-shadow:0 0 10px rgba(201,162,39,.3);line-height:1.5;font-style:italic"></p>
+    </div>
+  </div>
+
+</div>
+
 <div class="topbar">
-  <div class="brand">
-    <div class="display">Pod Wielkim Dachem Nieba</div>
-    <div class="meta">mapa poezji regionalnej</div>
+  <div style="display:flex;align-items:center">
+    <button class="hamburger-btn" onclick="otworzMenu()" aria-label="menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
+    </button>
+    <div class="brand">
+      <div class="display">Pod Wielkim Dachem Nieba</div>
+      <div class="meta">mapa poezji regionalnej</div>
+    </div>
   </div>
   <div class="crumbs">
     <button id="btn-back" class="btn-back" onclick="goBack()" aria-label="wstecz">
@@ -1043,6 +1299,7 @@ async function wczytajMiejscowosc(slug, baseUrl){
 
     dane.artysci[a.slug] = {
       imie_nazwisko: a.imie_nazwisko,
+      pochodzenie: a.pochodzenie || '',
       lata: a.lata,
       zdjecie: sciezkaPliku(baseUrl, slug, a.zdjecie),
       bio: a.bio,
@@ -1400,7 +1657,7 @@ function render(){
     if(stan.tomik) otworzTomikWZakladce(stan.slug, stan.tomik);
     ustawKontekst({
       eyebrow:'autor',
-      title:a.imie_nazwisko, sub:a.lata
+      title:a.imie_nazwisko, sub:[a.lata, a.pochodzenie].filter(Boolean).join(' · ')
     });
     pokazZakladke(zakladkaPisarza);
   }
@@ -2605,7 +2862,7 @@ function renderVillage(m){
       : `<div class="thumb"></div>`;
     btn.innerHTML = `${miniatura}
       <div class="name">${a.imie_nazwisko}</div>
-      <div class="years">${a.lata}</div>`;
+      <div class="years">${[a.lata, a.pochodzenie].filter(Boolean).join(' · ')}</div>`;
     tiles.appendChild(btn);
   });
 }
@@ -2933,6 +3190,111 @@ function resetTabs(panelId){
   const panel = document.getElementById(panelId);
   panel.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active', i===0));
   panel.querySelectorAll('.tab-panel').forEach((p,i)=>p.classList.toggle('active', i===0));
+}
+
+/* ============ HAMBURGER MENU — DWUPANELOWY ============ */
+const hmTresci = {
+  'o-projekcie': {
+    title: 'O projekcie',
+    body: '<h3>Pod Wielkim Dachem Nieba</h3><p>Wierszarium to interaktywna mapa poezji regionalnej. Łączy wiersze z miejscami, w których powstały — każdy punkt na mapie to historia, wspomnienie, emocja zapisana w słowach.</p><p>Projekt jest otwarty — każdy może pobrać program, dodać swoją miejscowość i poetów z okolicy. Razem tworzymy żywą mapę polskiej poezji.</p>'
+  },
+  'pobierz': {
+    title: 'Pobierz program',
+    body: '<p>Pobierz program i postaw własną mapę poezji swojej okolicy.</p><p><a href="#" style="color:var(--gold);text-decoration:underline">⬇️ Pobierz index.html</a></p><p style="font-size:13px;opacity:.6">Link zostanie zaktualizowany wkrótce.</p>'
+  },
+  'edytor-zdjec': {
+    title: 'Edytor zdjęć',
+    body: '<p>Narzędzie do przygotowania zdjęć poetów i okładek tomików w odpowiednim formacie.</p><p style="font-size:13px;opacity:.6">Wkrótce dostępny.</p>'
+  },
+  'jak-to-dziala': {
+    title: 'Jak to działa',
+    body: '<h3>Krok po kroku</h3><p>1. Pobierz program ze strony — <span onclick="pokazPodpowiedz(\'Pamiętaj! Program główny musi mieć zawsze nazwę index.html\')" style="color:#e04040;cursor:pointer;font-size:20px;font-weight:bold" title="Kliknij po więcej informacji">❓</span></p><p>2. Wypełnij formularz zgłoszeniowy — dodaj miejscowość, poetów i ich wiersze — <span onclick="pokazPodpowiedz(\'Wygenerowany plik musi mieć nazwę dane.json\')" style="color:#e04040;cursor:pointer;font-size:20px;font-weight:bold" title="Kliknij po więcej informacji">❓</span></p><p>3. Dopasuj swoje zdjęcia — użyj Edytor zdjęć — <span onclick="pokazPodpowiedz(\'Dopasuj swoje zdjęcia. Uważaj przy zapisie — wpisz tylko dokładną nazwę, a końcówka .jpg doda się automatycznie\')" style="color:#e04040;cursor:pointer;font-size:20px;font-weight:bold" title="Kliknij po więcej informacji">❓</span></p><p>4. Dodaj wpis do miejscowosci.json</p><p>5. Wrzuć na hosting — Twoja mapa poezji jest gotowa</p>'
+  },
+  'kontakt': {
+    title: 'Kontakt',
+    body: '<p>Masz pytania, pomysły albo chcesz zgłosić miejscowość?</p><p>✉️ <a href="mailto:kontakt@wierszarium.pl" style="color:var(--gold)">kontakt@wierszarium.pl</a></p>'
+  },
+  'forum': {
+    title: 'Forum',
+    body: '<p>Miejsce na Twoje przemyślenia i dyskusje o poezji.</p><p style="font-size:13px;opacity:.6">Wkrótce dostępne.</p>'
+  },
+  'kawa': {
+    title: 'Postaw kawę',
+    body: '<p>Wierszarium jest darmowe i otwarte. Jeśli podoba Ci się projekt, możesz wesprzeć jego rozwój.</p><p style="font-size:13px;opacity:.6">Link do zrzutki wkrótce.</p>'
+  }
+};
+
+let _aktywnaSekcja = null;
+let _rightTimeout = null;
+
+function otworzMenu(){
+  document.getElementById('hm-overlay').classList.add('open');
+}
+function zamknijMenu(){
+  document.getElementById('hm-overlay').classList.remove('open');
+  zamknijTresc();
+}
+function zamknijTresc(){
+  document.getElementById('hm-content').classList.remove('open');
+  document.getElementById('hm-right').classList.remove('open');
+  document.querySelectorAll('#hm-nav li').forEach(li => li.classList.remove('active'));
+  _aktywnaSekcja = null;
+  if(_rightTimeout){ clearTimeout(_rightTimeout); _rightTimeout = null; }
+}
+
+function otworzSekcje(id){
+  const dane = hmTresci[id];
+  if(!dane) return;
+
+  if(_aktywnaSekcja === id){ zamknijTresc(); return; }
+
+  _aktywnaSekcja = id;
+
+  document.querySelectorAll('#hm-nav li').forEach(li => {
+    li.classList.toggle('active', li.dataset.sekcja === id);
+  });
+
+  document.getElementById('hm-content-title').textContent = dane.title;
+  document.getElementById('hm-content-body').innerHTML = dane.body;
+  document.getElementById('hm-content').classList.add('open');
+
+  // prawy panel — kontekstowy do sekcji
+  document.getElementById('hm-right').classList.remove('open');
+  resetPrawyPanel();
+  if(_rightTimeout) clearTimeout(_rightTimeout);
+  if(id === 'o-projekcie'){
+    pokazKarty();
+    _rightTimeout = setTimeout(()=>{
+      document.getElementById('hm-right').classList.add('open');
+    }, 1000);
+  }
+}
+
+function pokazPodpowiedz(tekst){
+  document.getElementById('hm-right-karty').style.display = 'none';
+  const hint = document.getElementById('hm-right-hint');
+  hint.style.display = 'flex';
+  document.getElementById('hm-right-hint-text').textContent = tekst;
+  document.getElementById('hm-right').classList.add('open');
+}
+
+function pokazKarty(){
+  document.getElementById('hm-right-karty').style.display = '';
+  document.getElementById('hm-right-hint').style.display = 'none';
+}
+
+function resetPrawyPanel(){
+  document.getElementById('hm-right-karty').style.display = '';
+  document.getElementById('hm-right-hint').style.display = 'none';
+}
+
+function udostepnij(){
+  zamknijMenu();
+  if(navigator.share){
+    navigator.share({ title:'Pod Wielkim Dachem Nieba', text:'Mapa poezji regionalnej — odkryj wiersze związane z Twoją okolicą!', url:location.href });
+  } else {
+    navigator.clipboard.writeText(location.href).then(()=> toast('Link skopiowany — wyślij znajomym!'));
+  }
 }
 
 /* ============ TRYB PEŁNOEKRANOWEJ MAPY ============ */

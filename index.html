@@ -3242,7 +3242,9 @@ const hmTresci = {
   },
   'pobierz': {
     title: 'Pobierz program',
-    body: '<p>Pobierz program i postaw własną mapę poezji swojej okolicy.</p><p><a href="#" style="color:var(--gold);text-decoration:underline">⬇️ Pobierz index.html</a></p><p style="font-size:13px;opacity:.6">Link zostanie zaktualizowany wkrótce.</p>'
+    body: '<p>Pobierz program i postaw własną mapę poezji swojej okolicy. Plik zapisze się jako <b>index.html</b> — to gotowy program, który wgrywasz na własny hosting. Nazwa musi pozostać <b>index.html</b>, inaczej strona się nie otworzy.</p>'
+      + '<p><button onclick="pobierzProgram(this)" style="background:var(--gold);color:var(--lead);border:none;padding:12px 24px;border-radius:8px;font-family:inherit;font-size:15px;cursor:pointer;font-weight:500">⬇️ Pobierz program</button></p>'
+      + '<p style="font-size:13px;opacity:.6">Po pobraniu zajrzyj do „Jak to działa", żeby zobaczyć krok po kroku, co dalej.</p>'
   },
   'edytor-zdjec': {
     title: 'Edytor zdjęć',
@@ -3470,6 +3472,35 @@ function siec3dEtykieta(tekst){
 
 function zatrzymajSiec3D(){
   if(_siec3d){ _siec3d.stop(); _siec3d = null; }
+}
+
+/* ============ POBIERANIE PROGRAMU ============ */
+async function pobierzProgram(btn){
+  const url = 'https://wierszarium.github.io/program.html/index.html';
+  const oryg = btn.textContent;
+  btn.textContent = '⏳ Pobieranie...';
+  btn.disabled = true;
+  try{
+    const res = await fetch(url, { cache:'no-store' });
+    if(!res.ok) throw new Error('fetch');
+    const tekst = await res.text();
+    const blob = new Blob([tekst], { type:'text/html' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'index.html';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(link.href);
+    btn.textContent = '✓ Pobrano!';
+    setTimeout(()=>{ btn.textContent = oryg; btn.disabled = false; }, 2500);
+  }catch(e){
+    // gdyby fetch nie przeszedł — otwórz w nowej karcie jako plan B
+    btn.textContent = oryg;
+    btn.disabled = false;
+    window.open(url, '_blank');
+    toast('Otwieram program w nowej karcie — zapisz go: Ctrl+S');
+  }
 }
 
 function udostepnij(){

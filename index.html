@@ -410,6 +410,32 @@
     font-family:'JetBrains Mono',monospace;font-size:10px;
     color:var(--parchment-dim);opacity:.4;letter-spacing:.04em;
   }
+  /* licznik wejść w hamburgerze */
+  .hm-licznik{
+    margin:8px auto 14px;width:fit-content;
+    background:linear-gradient(180deg,rgba(40,40,55,0.5) 0%,rgba(20,20,30,0.6) 100%);
+    border:1px solid rgba(201,162,39,0.3);
+    border-radius:10px;padding:8px 14px;
+    font-family:'JetBrains Mono',monospace;
+    transition:border-color .3s var(--ease);
+  }
+  .hm-licznik:hover{border-color:rgba(201,162,39,0.55)}
+  .hm-licznik-row{
+    display:flex;align-items:center;justify-content:space-between;
+    gap:12px;line-height:1.2;
+  }
+  .hm-licznik-label{
+    font-size:9px;color:#888;letter-spacing:1px;
+    font-weight:700;text-transform:uppercase;
+  }
+  .hm-licznik-value{
+    font-size:12px;color:var(--gold-soft);font-weight:700;
+    min-width:24px;text-align:right;
+  }
+  .hm-licznik-divider{
+    height:1px;margin:4px 0;
+    background:linear-gradient(90deg,transparent,rgba(201,162,39,0.25),transparent);
+  }
 
   /* panel treści — wysuwa się obok menu */
   .hm-content{
@@ -970,8 +996,19 @@
       <li data-sekcja="forum"><a href="#" onclick="event.preventDefault();otworzSekcje('forum')"><span class="hm-iko">💬</span> Forum</a></li>
       <li><div class="hm-sep"></div></li>
       <li data-sekcja="kawa"><a href="#" onclick="event.preventDefault();otworzSekcje('kawa')"><span class="hm-iko">☕</span> Postaw kawę</a></li>
-      <li><button onclick="udostepnij()"><span class="hm-iko">🔗</span> Udostępnij / zaproś znajomych</button></li>
+      <li><button onclick="udostepnij()"><span class="hm-iko">🔗</span> <span class="hm-share-text">Udostępnij / zaproś znajomych</span></button></li>
     </ul>
+    <div class="hm-licznik" id="hm-licznik" title="Statystyki odwiedzin">
+      <div class="hm-licznik-row">
+        <span class="hm-licznik-label">Dziś</span>
+        <span class="hm-licznik-value" id="stats-today">—</span>
+      </div>
+      <div class="hm-licznik-divider"></div>
+      <div class="hm-licznik-row">
+        <span class="hm-licznik-label">Łącznie</span>
+        <span class="hm-licznik-value" id="stats-total">—</span>
+      </div>
+    </div>
     <div class="hm-footer">Pod Wielkim Dachem Nieba · wierszarium.pl</div>
   </nav>
 
@@ -3257,7 +3294,9 @@ const hmTresci = {
   },
   'kontakt': {
     title: 'Kontakt',
-    body: '<p>Masz pytania, pomysły albo chcesz zgłosić miejscowość?</p><p>✉️ <a href="mailto:kontakt@wierszarium.pl" style="color:var(--gold)">kontakt@wierszarium.pl</a></p>'
+    body: '<p>Masz pytania, pomysły, chcesz zgłosić miejscowość albo dołączyć do sieci? Napisz.</p>'
+      + '<p>✉️ <a href="mailto:wierszarium@wp.pl" style="color:var(--gold);font-size:17px;font-weight:500">wierszarium@wp.pl</a></p>'
+      + '<p style="font-size:14px;opacity:.7">Na ten adres możesz też wysłać swój plik dane.json wraz ze zdjęciami i nagraniami, jeśli chcesz dołączyć wiersze do istniejącej miejscowości.</p>'
   },
   'forum': {
     title: 'Forum',
@@ -3265,7 +3304,8 @@ const hmTresci = {
   },
   'kawa': {
     title: 'Postaw kawę',
-    body: '<p>Wierszarium jest darmowe i otwarte. Jeśli podoba Ci się projekt, możesz wesprzeć jego rozwój.</p><p style="font-size:13px;opacity:.6">Link do zrzutki wkrótce.</p>'
+    body: '<p>Wierszarium jest darmowe i otwarte dla wszystkich. Jeśli podoba Ci się projekt i chcesz wesprzeć jego rozwój, możesz postawić mi wirtualną kawę. Każde wsparcie pomaga utrzymać stronę i rozwijać nowe funkcje.</p>'
+      + '<p><a href="https://buycoffee.to/mini-klik" target="_blank" style="display:inline-block;background:var(--gold);color:var(--lead);padding:12px 24px;border-radius:8px;font-size:15px;font-weight:500;text-decoration:none">☕ Postaw kawę</a></p>'
   }
 };
 
@@ -3274,6 +3314,7 @@ let _rightTimeout = null;
 
 function otworzMenu(){
   document.getElementById('hm-overlay').classList.add('open');
+  licznikWejsc();
 }
 function zamknijMenu(){
   document.getElementById('hm-overlay').classList.remove('open');
@@ -3503,12 +3544,75 @@ async function pobierzProgram(btn){
   }
 }
 
+/* ============ LICZNIK WEJŚĆ (hamburger) ============ */
+let _licznikGotowy = false;
+async function licznikWejsc(){
+  if(_licznikGotowy) return;   // raz na sesję strony
+  const todayEl = document.getElementById('stats-today');
+  const totalEl = document.getElementById('stats-total');
+  if(!todayEl || !totalEl || !db){ return; }
+  _licznikGotowy = true;
+  try{
+    const today = new Date().toISOString().split('T')[0];
+    const docTotal = db.collection('liczniki').doc('wejscia-total');
+    const docToday = db.collection('liczniki').doc('wejscia-' + today);
+    // zwiększ raz na sesję
+    let policzone = false;
+    try{ policzone = sessionStorage.getItem('wdn_counted'); }catch(e){}
+    if(!policzone){
+      await Promise.all([
+        docTotal.set({ count: firebase.firestore.FieldValue.increment(1) }, { merge:true }),
+        docToday.set({ count: firebase.firestore.FieldValue.increment(1) }, { merge:true })
+      ]);
+      try{ sessionStorage.setItem('wdn_counted','1'); }catch(e){}
+    }
+    const [snapTotal, snapToday] = await Promise.all([docTotal.get(), docToday.get()]);
+    const total = snapTotal.exists ? (snapTotal.data().count || 0) : 0;
+    const dzis  = snapToday.exists ? (snapToday.data().count || 0) : 0;
+    todayEl.textContent = dzis.toLocaleString('pl-PL');
+    totalEl.textContent = total.toLocaleString('pl-PL');
+  }catch(e){
+    console.warn('Licznik niedostępny:', e);
+    todayEl.textContent = '—';
+    totalEl.textContent = '—';
+  }
+}
+
 function udostepnij(){
-  zamknijMenu();
+  const btn = document.querySelector('#hm-nav button[onclick*="udostepnij"]');
+  udostepnijStrone(btn);
+}
+
+async function udostepnijStrone(link){
+  const url = window.location.href;
+  const textEl = link ? link.querySelector('.hm-share-text') : null;
+  const original = textEl ? textEl.textContent : '';
+
+  // Na telefonie: natywne okno "Udostępnij"
   if(navigator.share){
-    navigator.share({ title:'Pod Wielkim Dachem Nieba', text:'Mapa poezji regionalnej — odkryj wiersze związane z Twoją okolicą!', url:location.href });
+    try{
+      await navigator.share({ title: document.title, url });
+      return;
+    }catch(err){
+      if(err && err.name === 'AbortError') return;
+    }
+  }
+  // Desktop: kopiowanie do schowka
+  try{
+    await navigator.clipboard.writeText(url);
+  }catch(err){
+    const ta = document.createElement('textarea');
+    ta.value = url; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select();
+    try{ document.execCommand('copy'); }catch(e){}
+    document.body.removeChild(ta);
+  }
+  // Potwierdzenie na przycisku
+  if(textEl){
+    textEl.textContent = '✓ Skopiowano link';
+    setTimeout(()=>{ textEl.textContent = original; }, 2500);
   } else {
-    navigator.clipboard.writeText(location.href).then(()=> toast('Link skopiowany — wyślij znajomym!'));
+    toast('✓ Skopiowano link — wyślij znajomym!');
   }
 }
 

@@ -961,6 +961,18 @@
   .okno .okno-hint{color:var(--gold-soft);font-size:13.5px;margin-bottom:22px}
   .okno .btn{width:100%}
 
+
+  /* plansza Cloudflare */
+  .cf-overlay{position:fixed;inset:0;z-index:9600;background:rgba(20,22,28,.78);backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:opacity .3s ease;display:flex;align-items:center;justify-content:center;padding:20px}
+  .cf-overlay.on{opacity:1;pointer-events:auto}
+  .cf-plansza{position:relative;width:min(760px,94vw);max-height:86vh;overflow-y:auto;background:linear-gradient(180deg,#1b2340 0%,#12172c 100%);border:1px solid rgba(201,162,39,.4);border-radius:18px;box-shadow:0 20px 60px rgba(0,0,0,.6);transform:translateY(30px) scale(.98);transition:transform .35s cubic-bezier(.2,.9,.3,1);padding:30px 32px 34px}
+  .cf-overlay.on .cf-plansza{transform:translateY(0) scale(1)}
+  .cf-x{position:absolute;top:16px;right:16px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;background:none;border:1px solid rgba(243,234,214,.2);border-radius:8px;color:var(--parchment);cursor:pointer;font-size:16px;transition:all .2s ease;z-index:2}
+  .cf-x:hover{border-color:var(--gold);background:rgba(201,162,39,.1)}
+  .cf-plansza h3{font-family:'Fraunces',serif}
+  .cf-plansza p{font-family:'Literata',serif;font-size:15px;line-height:1.7;color:var(--parchment-dim);margin:0 0 12px}
+  .cf-plansza b{color:var(--parchment)}
+  .cf-plansza code{font-family:'JetBrains Mono',monospace;font-size:13px;background:rgba(0,0,0,.3);padding:2px 6px;border-radius:4px;color:var(--gold-soft)}
 </style>
 </head>
 <body>
@@ -3285,6 +3297,9 @@ const hmTresci = {
       + '<div style="margin-top:22px;padding-top:18px;border-top:1px solid rgba(201,162,39,.2)"></div>'
       + '<p>To testowy, kompletny przykład — tak ma wyglądać cała strona. Pobierz, wrzuć na swój hosting lub Netlify i zobacz jak działa. Zajrzyj do folderów, podmień dane na swoje, wstaw własnych poetów i opublikuj w tej samej formie.</p>'
       + '<p><a href="https://wierszarium.github.io/program.html/wierszarium-przyklad.zip" style="display:inline-block;background:transparent;color:var(--gold);border:1.5px solid var(--gold);padding:11px 22px;border-radius:8px;font-size:15px;font-weight:500;text-decoration:none">📦 Pobierz przykład (ZIP)</a></p>'
+      + '<div style="margin-top:30px;padding-top:22px;border-top:2px solid rgba(201,162,39,.3)"></div>'
+      + '<p>Potrzebujesz miejsca w internecie na swoją mapę? Pokażemy Ci, jak założyć <b>darmowy hosting na Cloudflare</b> — krok po kroku.</p>'
+      + '<p><button onclick="otworzCloudflare()" style="background:var(--gold);color:var(--lead);border:none;padding:12px 24px;border-radius:8px;font-family:inherit;font-size:15px;cursor:pointer;font-weight:500">☁️ Załóż darmowy hosting na Cloudflare</button></p>'
   },
   'edytor-zdjec': {
     title: 'Edytor zdjęć',
@@ -3355,6 +3370,32 @@ function otworzSekcje(id){
       document.getElementById('hm-right').classList.add('open');
     }, 1000);
   }
+}
+
+
+/* ===== PLANSZA CLOUDFLARE ===== */
+function otworzCloudflare(){
+  document.getElementById('cf-tresc').innerHTML =
+      '<h3 style="font-family:Fraunces,serif;font-size:24px;color:var(--gold-soft);margin-bottom:6px">☁️ Darmowy hosting Cloudflare</h3>'
+      + '<p style="font-size:13px;opacity:.6;margin-bottom:16px">twoja strona w internecie · na zawsze</p>'
+      + '<p>Zrobiłeś mapę i chcesz, żeby <b>działała w internecie pod własnym linkiem</b>? Założysz sobie darmowe miejsce na <b>Cloudflare</b> — jednej z największych firm internetu — i wrzucisz tam swój plik w kilka minut.</p>'
+      + '<p>Bez płacenia, bez umów, bez znajomości programowania. Przeprowadzimy Cię <b>krok po kroku</b>, dokładnie tak, jak sami to przeszliśmy.</p>'
+      + '<div style="margin:18px 0;padding:14px 16px;background:rgba(201,162,39,.06);border-left:3px solid rgba(201,162,39,.4);border-radius:0 8px 8px 0;font-size:14px;line-height:1.7">🌍 <b>Ciekawostka:</b> Twoją mapę może otworzyć tysiąc osób, milion osób — i nic się nie stanie. Oglądanie stron z plikami jest na Cloudflare <b>nielimitowane i darmowe</b>. Cloudflare zarabia na wielkich firmach, a małych twórców wozi za darmo.</div>'
+      + '<p style="font-family:Fraunces,serif;font-size:18px;color:var(--gold-soft);margin:22px 0 4px">Jak to zrobić — krok po kroku</p>'
+      + '<p style="font-size:13px;opacity:.6;margin-bottom:14px">Cała droga od zera do żywej strony. Zajmie kilka minut.</p>'
+      + '<p><b>1. Załóż darmowe konto.</b> Wejdź na stronę rejestracji Cloudflare (przycisk na dole). Wpisz <b>e-mail</b> i wymyśl <b>hasło</b>. Zaznacz „Potwierdź, że jesteś człowiekiem" i kliknij <b>Sign up</b>.<br><span style="font-size:13px;opacity:.75">💡 Nie musisz zaznaczać zgody na reklamy. Karty płatniczej też nie podajesz — to naprawdę darmowe.</span></p>'
+      + '<p><b>2. Potwierdź e-mail.</b> Cloudflare wyśle Ci maila. Znajdź wiadomość i kliknij pomarańczowy przycisk <b>Verify your email</b>.<br><span style="font-size:13px;opacity:.75">⚠️ Sprawdź folder SPAM! Mail od Cloudflare lubi tam wpaść.</span></p>'
+      + '<p><b>3. Przeklik powitalny.</b> Cloudflare zada kilka pytań — nie mają znaczenia. Najprościej: <b>Personal</b> → <b>Developer / Engineer</b> → <b>1 (myself)</b>. Gdy pojawi się ekran „How would you like to get started?", w prawym <b>dolnym</b> rogu kliknij mały napis <b>Skip →</b>.<br><span style="font-size:13px;opacity:.75">💡 „Skip" to mały napis na samym dole, łatwo go przeoczyć.</span></p>'
+      + '<p><b>4. Wejdź w „Workers &amp; Pages".</b> Na środku panelu kliknij kafelek <b>Workers and Pages</b> (albo <b>Start building</b>). Wybierz <b>Create application</b>, potem <b>Upload your static files</b> (żółta ikona folderu).</p>'
+      + '<p><b>5. Wrzuć swój plik albo folder.</b> Pojawi się pole „Drag in or click to upload". Przeciągnij tam swój <code>index.html</code> — albo cały folder mapy.<br><span style="font-size:13px;opacity:.75">⚠️ Plik główny musi nazywać się dokładnie <code>index.html</code>. Mapę ze zdjęciami wrzuć jako cały folder naraz.</span></p>'
+      + '<p><b>6. Kliknij „Deploy" — i gotowe!</b> Cloudflare nada projektowi nazwę — możesz ją zmienić albo zostawić. Kliknij niebieski <b>Deploy</b>. Po chwili dostajesz <b>swój link</b>, np. <code>twoja-nazwa.workers.dev</code>. Kliknij <b>Visit</b> — Twoja strona żyje w internecie! 🎉</p>'
+      + '<div style="margin:18px 0;padding:14px 16px;background:rgba(201,162,39,.06);border-left:3px solid rgba(201,162,39,.4);border-radius:0 8px 8px 0;font-size:14px;line-height:1.7"><b>Co możesz tam wrzucać:</b> strony i mapy (HTML), zdjęcia (JPG, PNG, GIF, panoramy 360°), audio (MP3, WAV), dokumenty (PDF). Jedyna granica: jeden plik do <b>25 MB</b>. Długie filmy lepiej wrzucać na YouTube i wklejać jako link.</div>'
+      + '<p style="margin-top:20px"><a href="https://dash.cloudflare.com/sign-up" target="_blank" rel="noopener" style="display:inline-block;background:var(--gold);color:var(--lead);padding:12px 24px;border-radius:8px;font-size:15px;font-weight:500;text-decoration:none;margin:4px 4px">☁️ Załóż darmowe konto →</a> <a href="https://dash.cloudflare.com/?to=/:account/workers-and-pages" target="_blank" rel="noopener" style="display:inline-block;background:transparent;color:var(--gold);border:1.5px solid var(--gold);padding:11px 22px;border-radius:8px;font-size:15px;font-weight:500;text-decoration:none;margin:4px 4px">📤 Przejdź do wrzucania</a></p>'
+      + '<p style="font-size:13px;opacity:.6">Pierwszy przycisk — gdy zakładasz konto. Drugi — gdy masz już konto i chcesz wrzucić plik.</p>';
+  document.getElementById('cf-overlay').classList.add('on');
+}
+function zamknijCloudflare(){
+  document.getElementById('cf-overlay').classList.remove('on');
 }
 
 function pokazPodpowiedz(tekst){
@@ -3665,5 +3706,14 @@ async function startApp(){
 }
 startApp();
 </script>
+
+<!-- ===== PLANSZA CLOUDFLARE ===== -->
+<div class="cf-overlay" id="cf-overlay" onclick="zamknijCloudflare()">
+  <div class="cf-plansza" onclick="event.stopPropagation()">
+    <button class="cf-x" onclick="zamknijCloudflare()" aria-label="zamknij">✕</button>
+    <div id="cf-tresc"></div>
+  </div>
+</div>
+
 </body>
 </html>

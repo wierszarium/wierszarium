@@ -1,0 +1,64 @@
+{
+  "slug": "ziemia",
+  "nazwa": "Ziemia",
+  "podtytul": "",
+  "opis": "To przykładowa miejscowość testowa. Błękitna planeta — nasz dom.",
+  "lat": 52.22970,
+  "lng": 21.01220,
+  "zdjecie": "1.jpg",
+  "opiekun": {
+    "imie": "Twoje imię",
+    "kontakt": "twoj@email.pl"
+  },
+  "artysci": [
+    {
+      "slug": "anna-blekitna",
+      "imie_nazwisko": "Anna Błękitna",
+      "pochodzenie": "ur. nad oceanem",
+      "lata": "1955–2025",
+      "zdjecie": "poeta.jpg",
+      "bio": "Przykładowa poetka testowa. Piewczyni błękitnej planety, oceanów i chmur.",
+      "tomiki": [
+        {
+          "slug": "blekitna-kropka",
+          "tytul": "Błękitna kropka",
+          "okladka": "okladka.jpg",
+          "wiersze": [
+            {
+              "slug": "dom",
+              "tytul": "Dom",
+              "tresc": "Jedno miejsce\nw całym wszechświecie\ngdzie woda jest płynna\na powietrze się nadaje\n\nnie doceniamy\ntego cudu\ndopóki nie spojrzymy\nz daleka",
+              "data_powstania": "",
+              "zrodlo": "",
+              "audio": null,
+              "miejsca": []
+            },
+            {
+              "slug": "ocean",
+              "tytul": "Ocean",
+              "tresc": "Trzy czwarte\nnaszej planety\nto woda\nktórej nie znamy\n\ngłębiej niż sięga wzrok\nkryją się światy\no których\nnawet nie śnimy",
+              "data_powstania": "",
+              "zrodlo": "",
+              "audio": null,
+              "miejsca": []
+            },
+            {
+              "slug": "chmury",
+              "tytul": "Chmury",
+              "tresc": "Białe stada\npłyną nad nami\nbez pośpiechu\nbez celu\n\nkażda inna\nkażda znika\nzanim zdążysz\njej nadać imię",
+              "data_powstania": "",
+              "zrodlo": "",
+              "audio": null,
+              "miejsca": []
+            }
+          ],
+          "miejsce": {
+            "nazwa": "",
+            "lat": 52.23300,
+            "lng": 21.00800
+          }
+        }
+      ]
+    }
+  ]
+}

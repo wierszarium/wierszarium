@@ -1,0 +1,64 @@
+{
+  "slug": "ksiezyc",
+  "nazwa": "Księżyc",
+  "podtytul": "",
+  "opis": "To przykładowa miejscowość. Podmień ją na swoją — wpisz nazwę, współrzędne i swoich poetów.",
+  "lat": 51.19516,
+  "lng": 23.16488,
+  "zdjecie": "1.jpg",
+  "opiekun": {
+    "imie": "Twoje imię",
+    "kontakt": "twoj@email.pl"
+  },
+  "artysci": [
+    {
+      "slug": "jan-ksiezycowy",
+      "imie_nazwisko": "Jan Księżycowy",
+      "pochodzenie": "ur. pod pełnią",
+      "lata": "1950–2020",
+      "zdjecie": "poeta.jpg",
+      "bio": "Przykładowy poeta. W tym miejscu wpisz kilka zdań o autorze — skąd pochodził, czym się zajmował, co pisał.",
+      "tomiki": [
+        {
+          "slug": "srebrne-swiatlo",
+          "tytul": "Srebrne światło",
+          "okladka": "okladka.jpg",
+          "wiersze": [
+            {
+              "slug": "pelnia",
+              "tytul": "Pełnia",
+              "tresc": "Wzeszedł nad dachy\ncichy i okrągły\njak stara moneta\nwyjęta z kieszeni nocy\n\nnikt go nie prosił\na jednak przyszedł\nposiedzieć z nami\ndo rana",
+              "data_powstania": "",
+              "zrodlo": "",
+              "audio": null,
+              "miejsca": []
+            },
+            {
+              "slug": "nów",
+              "tytul": "Nów",
+              "tresc": "Dziś go nie ma\nschował się gdzieś\nza własnym cieniem\n\nale wiem że wróci —\nksiężyc zawsze\ndotrzymuje słowa",
+              "data_powstania": "",
+              "zrodlo": "",
+              "audio": null,
+              "miejsca": []
+            },
+            {
+              "slug": "poswiata",
+              "tytul": "Poświata",
+              "tresc": "Kładzie się srebrem\nna mokrej trawie\nna parapecie\nna twojej twarzy\n\nświatło które\nnie grzeje\na jednak\nogrzewa",
+              "data_powstania": "",
+              "zrodlo": "",
+              "audio": null,
+              "miejsca": []
+            }
+          ],
+          "miejsce": {
+            "nazwa": "",
+            "lat": 51.19822,
+            "lng": 23.16271
+          }
+        }
+      ]
+    }
+  ]
+}

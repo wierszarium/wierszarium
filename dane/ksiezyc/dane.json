@@ -1,10 +1,10 @@
 {
-  "slug": "ksiezyc",
-  "nazwa": "Księżyc",
+  "slug": "ziemia",
+  "nazwa": "Ziemia",
   "podtytul": "",
-  "opis": "To przykładowa miejscowość. Podmień ją na swoją — wpisz nazwę, współrzędne i swoich poetów.",
-  "lat": 51.19516,
-  "lng": 23.16488,
+  "opis": "To przykładowa miejscowość testowa. Błękitna planeta — nasz dom.",
+  "lat": 52.2297,
+  "lng": 21.0122,
   "zdjecie": "1.jpg",
   "opiekun": {
     "imie": "Twoje imię",
@@ -12,12 +12,61 @@
   },
   "artysci": [
     {
-      "slug": "jan-ksiezycowy",
-      "imie_nazwisko": "Jan Księżycowy",
-      "pochodzenie": "ur. pod pełnią",
-      "lata": "1950–2020",
+      "slug": "anna-blekitna",
+      "imie_nazwisko": "Anna Błękitna",
+      "pochodzenie": "ur. nad oceanem",
+      "lata": "1955–2025",
       "zdjecie": "poeta.jpg",
-      "bio": "Przykładowy poeta. W tym miejscu wpisz kilka zdań o autorze — skąd pochodził, czym się zajmował, co pisał.",
+      "bio": "Przykładowa poetka testowa. Piewczyni błękitnej planety, oceanów i chmur.",
+      "tomiki": [
+        {
+          "slug": "blekitna-kropka",
+          "tytul": "Błękitna kropka",
+          "okladka": "okladka.jpg",
+          "wiersze": [
+            {
+              "slug": "dom",
+              "tytul": "Dom",
+              "tresc": "Jedno miejsce\nw całym wszechświecie\ngdzie woda jest płynna\na powietrze się nadaje\n\nnie doceniamy\ntego cudu\ndopóki nie spojrzymy\nz daleka",
+              "data_powstania": "",
+              "zrodlo": "",
+              "audio": null,
+              "miejsca": []
+            },
+            {
+              "slug": "ocean",
+              "tytul": "Ocean",
+              "tresc": "Trzy czwarte\nnaszej planety\nto woda\nktórej nie znamy\n\ngłębiej niż sięga wzrok\nkryją się światy\no których\nnawet nie śnimy",
+              "data_powstania": "",
+              "zrodlo": "",
+              "audio": null,
+              "miejsca": []
+            },
+            {
+              "slug": "chmury",
+              "tytul": "Chmury",
+              "tresc": "Białe stada\npłyną nad nami\nbez pośpiechu\nbez celu\n\nkażda inna\nkażda znika\nzanim zdążysz\njej nadać imię",
+              "data_powstania": "",
+              "zrodlo": "",
+              "audio": null,
+              "miejsca": []
+            }
+          ],
+          "miejsce": {
+            "nazwa": "",
+            "lat": 52.233,
+            "lng": 21.008
+          }
+        }
+      ]
+    },
+    {
+      "slug": "ksiezyc",
+      "imie_nazwisko": "księżyc",
+      "pochodzenie": "",
+      "lata": "",
+      "zdjecie": null,
+      "bio": "",
       "tomiki": [
         {
           "slug": "srebrne-swiatlo",
@@ -34,7 +83,7 @@
               "miejsca": []
             },
             {
-              "slug": "nów",
+              "slug": "now",
               "tytul": "Nów",
               "tresc": "Dziś go nie ma\nschował się gdzieś\nza własnym cieniem\n\nale wiem że wróci —\nksiężyc zawsze\ndotrzymuje słowa",
               "data_powstania": "",
@@ -54,8 +103,8 @@
           ],
           "miejsce": {
             "nazwa": "",
-            "lat": 51.19822,
-            "lng": 23.16271
+            "lat": 51.1688,
+            "lng": 23.09863
           }
         }
       ]

@@ -1,0 +1,64 @@
+{
+  "slug": "jowisz",
+  "nazwa": "Jowisz",
+  "podtytul": "",
+  "opis": "To przykładowa miejscowość testowa. Największy olbrzym Układu Słonecznego.",
+  "lat": 50.06470,
+  "lng": 19.94500,
+  "zdjecie": "1.jpg",
+  "opiekun": {
+    "imie": "Twoje imię",
+    "kontakt": "twoj@email.pl"
+  },
+  "artysci": [
+    {
+      "slug": "jan-burzowy",
+      "imie_nazwisko": "Jan Burzowy",
+      "pochodzenie": "ur. w oku burzy",
+      "lata": "1930–2005",
+      "zdjecie": "poeta.jpg",
+      "bio": "Przykładowy poeta testowy. Piewca gazowego olbrzyma i wiecznej burzy.",
+      "tomiki": [
+        {
+          "slug": "wieczna-burza",
+          "tytul": "Wieczna burza",
+          "okladka": "okladka.jpg",
+          "wiersze": [
+            {
+              "slug": "czerwona-plama",
+              "tytul": "Czerwona Plama",
+              "tresc": "Burza większa\nniż cała Ziemia\nszaleje\nod trzystu lat\n\nnikt jej nie wywołał\nnikt nie uciszy\nkręci się w kółko\nbez początku i końca",
+              "data_powstania": "",
+              "zrodlo": "",
+              "audio": null,
+              "miejsca": []
+            },
+            {
+              "slug": "pasy",
+              "tytul": "Pasy",
+              "tresc": "Wstęgi chmur\nowijają olbrzyma\njedne płyną w prawo\ndrugie w lewo\n\ntaniec bez tancerzy\nmuzyka bez dźwięku\ngra od miliardów lat\ndla nikogo",
+              "data_powstania": "",
+              "zrodlo": "",
+              "audio": null,
+              "miejsca": []
+            },
+            {
+              "slug": "ksiezyce",
+              "tytul": "Dziewięćdziesiąt księżyców",
+              "tresc": "Otacza go orszak\nksiężyców bez liku\njedne z lodu\ninne z ognia\n\nkról który nigdy\nnie jest sam\na jednak\ntaki daleki",
+              "data_powstania": "",
+              "zrodlo": "",
+              "audio": null,
+              "miejsca": []
+            }
+          ],
+          "miejsce": {
+            "nazwa": "",
+            "lat": 50.06100,
+            "lng": 19.93900
+          }
+        }
+      ]
+    }
+  ]
+}

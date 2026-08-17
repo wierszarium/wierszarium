@@ -1,0 +1,64 @@
+{
+  "slug": "mars",
+  "nazwa": "Mars",
+  "podtytul": "",
+  "opis": "To przykładowa miejscowość testowa. Czerwona planeta pełna poezji.",
+  "lat": 51.24700,
+  "lng": 22.57260,
+  "zdjecie": "1.jpg",
+  "opiekun": {
+    "imie": "Twoje imię",
+    "kontakt": "twoj@email.pl"
+  },
+  "artysci": [
+    {
+      "slug": "marek-czerwony",
+      "imie_nazwisko": "Marek Czerwony",
+      "pochodzenie": "ur. pod czerwoną gwiazdą",
+      "lata": "1940–2010",
+      "zdjecie": "poeta.jpg",
+      "bio": "Przykładowy poeta testowy. Piewca czerwonej planety i pustynnych wichrów.",
+      "tomiki": [
+        {
+          "slug": "rdzawe-piaski",
+          "tytul": "Rdzawe piaski",
+          "okladka": "okladka.jpg",
+          "wiersze": [
+            {
+              "slug": "czerwony-pyl",
+              "tytul": "Czerwony pył",
+              "tresc": "Wiatr niesie pył\nkoloru zaschniętej krwi\nnad martwym morzem\nktórego nigdy nie było\n\ntu cisza ma barwę\nrdzy i zachodu\ni trwa\nod miliarda lat",
+              "data_powstania": "",
+              "zrodlo": "",
+              "audio": null,
+              "miejsca": []
+            },
+            {
+              "slug": "dwa-ksiezyce",
+              "tytul": "Dwa księżyce",
+              "tresc": "Fobos i Deimos —\ndwaj bracia\nbiegną po niebie\nw różne strony\n\njeden wschodzi\ngdy drugi zachodzi\nnigdy się nie spotkają\na jednak są razem",
+              "data_powstania": "",
+              "zrodlo": "",
+              "audio": null,
+              "miejsca": []
+            },
+            {
+              "slug": "olympus",
+              "tytul": "Olympus",
+              "tresc": "Najwyższa góra\nw całym układzie\nmilczy pod niebem\nbez powietrza\n\nnie ma jej kto zdobyć\nnie ma jej kto podziwiać\nstoi\nbo musi stać",
+              "data_powstania": "",
+              "zrodlo": "",
+              "audio": null,
+              "miejsca": []
+            }
+          ],
+          "miejsce": {
+            "nazwa": "",
+            "lat": 51.25100,
+            "lng": 22.56800
+          }
+        }
+      ]
+    }
+  ]
+}

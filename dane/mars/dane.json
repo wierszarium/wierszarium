@@ -3,8 +3,8 @@
   "nazwa": "Mars",
   "podtytul": "",
   "opis": "To przykładowa miejscowość testowa. Czerwona planeta pełna poezji.",
-  "lat": 51.24700,
-  "lng": 22.57260,
+  "lat": 51.247,
+  "lng": 22.5726,
   "zdjecie": "1.jpg",
   "opiekun": {
     "imie": "Twoje imię",
@@ -20,9 +20,9 @@
       "bio": "Przykładowy poeta testowy. Piewca czerwonej planety i pustynnych wichrów.",
       "tomiki": [
         {
-          "slug": "rdzawe-piaski",
-          "tytul": "Rdzawe piaski",
-          "okladka": "okladka.jpg",
+          "slug": "pierwszy-tomik",
+          "tytul": "Pierwszy tomik",
+          "okladka": null,
           "wiersze": [
             {
               "slug": "czerwony-pyl",
@@ -50,13 +50,40 @@
               "zrodlo": "",
               "audio": null,
               "miejsca": []
+            },
+            {
+              "slug": "czemu-cie-tu-nie-ma",
+              "tytul": "Czemu Cię tu nie ma",
+              "tresc": "Czemu Cię tu nie ma\nCzemu kochanie\nPuste wołanie\nJak echo w oddanie\nNie mam słów\nNie mam już\nNie mam Ciebie\nAni noc\nAni dzień\nTego nie wie\n\n[Verse 2]\nNa ulicach cisza\nW sercu mgła\nObietnice\nCienie kradną nasz czas\nGdy przepadł ślad Twój\nGdzieś w tłumie ginie\nKażda chwila\nKażda chwila pusta w nim\n\n[Chorus]\nGdzie jesteś Ty\nMój sen na jawie\nGdzie jesteś Ty\nJak zrozumienie na sprawie\nCzy wrócisz znów\nCzy przepadniesz gdzieś\nZostał ślad\nTwój ślad i tyś\n",
+              "data_powstania": "",
+              "zrodlo": "",
+              "audio": null,
+              "miejsca": [
+                {
+                  "nazwa": "",
+                  "typ": "",
+                  "lat": 51.14021,
+                  "lng": 22.99432
+                }
+              ]
+            },
+            {
+              "slug": "swit-przez-okno",
+              "tytul": "Świt przez okno",
+              "tresc": "Świt przez okno jak echo nieba\nTy w sercu choć ciebie tu nie ma\nPiszę na skrawku nocy\nByś wiedział jestem w bez mocy\n\nOtwórz list co dziś wysłałam\nw nim uczucia swe schowałam\nczy jest tam miejsce na marzenia\nTam gdzieś daleko gzdie jesteś teraz\n",
+              "data_powstania": "",
+              "zrodlo": "",
+              "audio": null,
+              "miejsca": [
+                {
+                  "nazwa": "",
+                  "typ": "",
+                  "lat": 51.13889,
+                  "lng": 22.99294
+                }
+              ]
             }
-          ],
-          "miejsce": {
-            "nazwa": "",
-            "lat": 51.25100,
-            "lng": 22.56800
-          }
+          ]
         }
       ]
     }

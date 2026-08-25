@@ -96,7 +96,22 @@
     background:linear-gradient(180deg,rgba(15,15,24,.85) 0%,transparent 100%);
     padding-bottom:28px;
   }
-  body.mapa-full .stage-context{display:none!important}
+  body.mapa-full .stage-context{
+    display:block!important;
+    position:fixed!important;top:80px!important;left:24px!important;
+    z-index:100!important;
+    max-width:380px!important;
+    background:rgba(15,15,24,.88)!important;
+    backdrop-filter:blur(12px)!important;
+    border:1px solid rgba(201,162,39,.3)!important;
+    border-radius:12px!important;
+    padding:18px 22px!important;
+    box-shadow:0 8px 32px rgba(0,0,0,.5)!important;
+    text-align:left!important;
+    pointer-events:auto!important;
+  }
+  /* na home nie pokazuj pustego kontekstu */
+  body.mapa-full .stage.mode-home .stage-context{display:none!important}
   body.mapa-full .szukaj-blok{
     position:fixed!important;bottom:20px!important;left:50%!important;
     transform:translateX(-50%)!important;z-index:100!important;
@@ -114,6 +129,28 @@
   body.mapa-full #btn-fullmap{
     opacity:1!important;background:var(--gold)!important;color:var(--lead)!important;
     border-color:var(--gold)!important;
+  }
+  /* treść (village/author/poem) jako nakładka na pełnoekranowej mapie */
+  body.mapa-full .content{
+    position:fixed!important;
+    top:80px!important;right:20px!important;bottom:20px!important;
+    width:min(440px,45vw)!important;max-width:none!important;
+    margin:0!important;padding:0 20px 20px!important;
+    z-index:100!important;
+    background:rgba(15,15,24,.9)!important;
+    backdrop-filter:blur(14px)!important;
+    border:1px solid rgba(201,162,39,.25)!important;
+    border-radius:14px!important;
+    box-shadow:0 8px 40px rgba(0,0,0,.55)!important;
+    overflow-y:auto!important;
+    pointer-events:auto!important;
+  }
+  /* na home — chowamy pusty panel treści */
+  body.mapa-full .content:has(#panel-home.active){
+    display:none!important;
+  }
+  body.mapa-full .content .divider{
+    margin:12px 0 16px!important;
   }
   @keyframes mapExpand{
     from{clip-path:circle(35% at 50% 45%)}
@@ -1706,7 +1743,7 @@ function strefa(panel){
   return null;   // 'home', 'ulubione' itp. — bez grupowania
 }
 function przejdz(nowyStan){
-  wylaczFullMap();
+  // NIE wyłączamy pełnoekranowej mapy — treść pojawi się jako nakładka
   const obecnaStrefa = strefa(stan.panel);
   const docelowaStrefa = strefa(nowyStan.panel);
   if(obecnaStrefa !== null && obecnaStrefa === docelowaStrefa){
@@ -1763,11 +1800,16 @@ function render(){
     pokazPanel('village');
     rysujMiejscowosci();
     ukryjWiersze();
-    // przy wejściu z dużej mapy: płynny przelot PO zmniejszeniu koła;
-    // przy skakaniu między miejscowościami: bez ruchu mapy
-    ustawTrybKola('detail', zDuzejMapy ? { lat:m.lat, lng:m.lng, zoom:14 } : null);
+    if(_fullMap){
+      // pełnoekranowa mapa — nie zmniejszamy koła, latamy po dużej mapie
+      mapa.flyTo([m.lat, m.lng], 14, { duration:1.8, easeLinearity:0.25 });
+      ustawZdjecie(null);   // zdjęcie ukryte, mapa widoczna
+    } else {
+      // normalny tryb — zmniejszamy koło
+      ustawTrybKola('detail', zDuzejMapy ? { lat:m.lat, lng:m.lng, zoom:14 } : null);
+      ustawZdjecie(m, `zdjęcie: ${m.nazwa}`);
+    }
     renderVillage(m);
-    ustawZdjecie(m, `zdjęcie: ${m.nazwa}`);
     ustawKontekst({
       eyebrow:'miejscowość',
       title:m.nazwa, sub:m.podtytul
@@ -1778,11 +1820,17 @@ function render(){
     const a = dane.artysci[stan.slug];
     const m = dane.miejscowosci.find(x=>x.slug===a.miejscowosc);
     pokazPanel('author');
-    ustawTrybKola('detail');
-    rysujMiejscowosci();
-    rysujWierszeAutora(a);         // FIOLETOWE kropki wierszy na tej samej mapie
+    if(_fullMap){
+      rysujMiejscowosci();
+      rysujWierszeAutora(a);
+      ustawZdjecie(null);
+    } else {
+      ustawTrybKola('detail');
+      rysujMiejscowosci();
+      rysujWierszeAutora(a);
+      ustawZdjecie(a, `zdjęcie: ${a.imie_nazwisko}`);
+    }
     renderAuthor(stan.slug, a);
-    ustawZdjecie(a, `zdjęcie: ${a.imie_nazwisko}`);   // koło przełącza mapę ↔ portret artysty
     // wracając z wiersza — przywróć otwarty wcześniej tomik
     if(stan.tomik) otworzTomikWZakladce(stan.slug, stan.tomik);
     ustawKontekst({
@@ -1793,7 +1841,7 @@ function render(){
   }
   if(stan.panel === 'ulubione'){
     pokazPanel('ulubione');
-    ustawTrybKola('detail');
+    if(!_fullMap) ustawTrybKola('detail');
     rysujMiejscowosci();
     if(warstwaWierszy) warstwaWierszy.clearLayers();
     ustawZdjecie(null);
@@ -1809,12 +1857,15 @@ function render(){
     const a = dane.artysci[stan.autor];
     const t = a.tomiki.find(x=>x.slug===stan.slug);
     pokazPanel('tomik');
-    ustawTrybKola('detail');
+    if(!_fullMap) ustawTrybKola('detail');
     rysujMiejscowosci();
     rysujWierszeAutora(a);            // kropki wierszy autora zostają
     renderTomik(a, t);
-    // koło: okładka tomiku ↔ mapa (przełącznik jak przy miejscowości/artyście)
-    ustawZdjecie({ zdjecie: t.okladka }, `okładka: ${t.tytul}`);
+    if(_fullMap){
+      ustawZdjecie(null);
+    } else {
+      ustawZdjecie({ zdjecie: t.okladka }, `okładka: ${t.tytul}`);
+    }
     ustawKontekst({
       eyebrow:'tomik',
       title:t.tytul, sub:`${a.imie_nazwisko} · ${t.wiersze.length} ${t.wiersze.length===1?'wiersz':'wierszy'}`
@@ -1845,6 +1896,11 @@ function render(){
     });
     if(trybSpaceru){
       ustawTrybKola('home');
+    } else if(_fullMap){
+      rysujMiejscowosci();
+      if(a) rysujWierszeAutora(a);
+      ustawZdjecie(null);
+      centrujNadWierszem(w, stan.slug);
     } else {
       ustawTrybKola('detail');
       rysujMiejscowosci();
@@ -3897,18 +3953,27 @@ let _fullMapAnimating = false;
 
 function toggleFullMap(){
   if(_fullMapAnimating) return;
-  if(stan.panel !== 'home'){ goHome(); return; }
   if(!_fullMap){
+    // włącz tryb pełnoekranowej mapy (tylko z home)
+    if(stan.panel !== 'home'){ goHome(); return; }
     _fullMap = true;
     document.body.classList.add('mapa-full');
     setTimeout(()=>{ if(mapa) mapa.invalidateSize({ animate:false }); }, 50);
   } else {
+    // wyłącz pełnoekranową mapę — wracamy do normalnego widoku
     _fullMapAnimating = true;
+    // jeśli byliśmy na podstronie, wróć do home
+    if(stan.panel !== 'home'){
+      historia = [];
+      stan = { panel:'home' };
+      document.getElementById('btn-back').disabled = true;
+    }
     document.body.classList.add('mapa-closing');
     setTimeout(()=>{
       document.body.classList.remove('mapa-full','mapa-closing');
       _fullMap = false;
       _fullMapAnimating = false;
+      render();
       setTimeout(()=>{ if(mapa) mapa.invalidateSize({ animate:false }); }, 50);
     }, 400);
   }

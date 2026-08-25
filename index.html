@@ -85,33 +85,35 @@
   body.mapa-full .med-frame,
   body.mapa-full .luk-spacer,
   body.mapa-full .luk-ulubione,
+  body.mapa-full .luk-foto,
   body.mapa-full .attrib-kolo{
     opacity:0!important;pointer-events:none!important;
     transition:opacity .3s ease!important;
   }
-  /* medalion-zdjęcie: pływający kółko na tle pełnoekranowej mapy */
+  /* zdjęcie: nagłówek panelu bocznego na tle pełnoekranowej mapy */
   body.mapa-full .med-photo{
     position:fixed!important;
     inset:auto!important;
-    top:90px!important;left:24px!important;
-    width:220px!important;height:220px!important;
-    border-radius:50%!important;
-    z-index:110!important;
-    pointer-events:auto!important;
-    border:4px solid var(--gold)!important;
-    box-shadow:0 6px 30px rgba(0,0,0,.6), 0 0 0 1px var(--lead)!important;
-    transition:opacity .6s ease!important;
+    top:80px!important;right:20px!important;
+    width:min(440px,45vw)!important;height:160px!important;
+    border-radius:14px 14px 0 0!important;
+    z-index:101!important;
+    overflow:hidden!important;
+    border:none!important;
+    border-left:1px solid rgba(201,162,39,.25)!important;
+    border-right:1px solid rgba(201,162,39,.25)!important;
+    border-top:1px solid rgba(201,162,39,.25)!important;
+    box-shadow:none!important;
+    background-size:cover!important;
+    background-position:center!important;
+    transition:opacity .4s ease!important;
+  }
+  body.mapa-full .med-photo.show{
+    opacity:1!important;pointer-events:auto!important;cursor:pointer!important;
   }
   body.mapa-full .med-photo .ph-fallback{
     font-size:10px!important;padding:18px!important;
-  }
-  /* łuk foto obok pływającego medalionu */
-  body.mapa-full .luk-foto{
-    position:fixed!important;
-    top:90px!important;left:24px!important;
-    width:220px!important;height:220px!important;
-    z-index:111!important;
-    opacity:1!important;pointer-events:auto!important;
+    background:linear-gradient(150deg,var(--sapphire),var(--emerald))!important;
   }
   body.mapa-full .luk-foto.hidden{
     display:none!important;
@@ -123,17 +125,25 @@
   }
   body.mapa-full .stage-context{
     display:block!important;
-    position:fixed!important;top:320px!important;left:24px!important;
-    z-index:100!important;
-    max-width:280px!important;
-    background:rgba(15,15,24,.88)!important;
+    position:fixed!important;top:240px!important;right:20px!important;
+    z-index:101!important;
+    width:min(440px,45vw)!important;max-width:none!important;
+    background:rgba(15,15,24,.95)!important;
     backdrop-filter:blur(12px)!important;
-    border:1px solid rgba(201,162,39,.3)!important;
-    border-radius:12px!important;
-    padding:14px 18px!important;
-    box-shadow:0 8px 32px rgba(0,0,0,.5)!important;
+    border-left:1px solid rgba(201,162,39,.25)!important;
+    border-right:1px solid rgba(201,162,39,.25)!important;
+    border-radius:0!important;
+    padding:12px 20px!important;
+    box-shadow:none!important;
     text-align:left!important;
     pointer-events:auto!important;
+    box-sizing:border-box!important;
+  }
+  body.mapa-full .stage-context h2{
+    font-size:20px!important;margin:0 0 4px!important;
+  }
+  body.mapa-full .stage-context .sub{
+    margin-bottom:4px!important;
   }
   /* na home nie pokazuj pustego kontekstu */
   body.mapa-full .stage.mode-home .stage-context{display:none!important}
@@ -158,14 +168,15 @@
   /* treść (village/author/poem) jako nakładka na pełnoekranowej mapie */
   body.mapa-full .content{
     position:fixed!important;
-    top:80px!important;right:20px!important;bottom:20px!important;
+    top:300px!important;right:20px!important;bottom:20px!important;
     width:min(440px,45vw)!important;max-width:none!important;
     margin:0!important;padding:0 20px 20px!important;
     z-index:100!important;
-    background:rgba(15,15,24,.9)!important;
+    background:rgba(15,15,24,.92)!important;
     backdrop-filter:blur(14px)!important;
     border:1px solid rgba(201,162,39,.25)!important;
-    border-radius:14px!important;
+    border-top:none!important;
+    border-radius:0 0 14px 14px!important;
     box-shadow:0 8px 40px rgba(0,0,0,.55)!important;
     overflow-y:auto!important;
     pointer-events:auto!important;
@@ -1828,7 +1839,9 @@ function render(){
     if(_fullMap){
       // pełnoekranowa mapa — nie zmniejszamy koła, latamy po dużej mapie
       mapa.flyTo([m.lat, m.lng], 14, { duration:1.8, easeLinearity:0.25 });
-      ustawZdjecie(m, `zdjęcie: ${m.nazwa}`);   // zdjęcie w pływającym medalionie
+      ustawZdjecie(m, `zdjęcie: ${m.nazwa}`);
+      // pokaż zdjęcie od razu (bez czekania 5s)
+      setTimeout(()=>{ if(!zdjeciePokazane) toggleFoto(); }, 200);
     } else {
       // normalny tryb — zmniejszamy koło
       ustawTrybKola('detail', zDuzejMapy ? { lat:m.lat, lng:m.lng, zoom:14 } : null);
@@ -1849,6 +1862,7 @@ function render(){
       rysujMiejscowosci();
       rysujWierszeAutora(a);
       ustawZdjecie(a, `zdjęcie: ${a.imie_nazwisko}`);
+      setTimeout(()=>{ if(!zdjeciePokazane) toggleFoto(); }, 200);
     } else {
       ustawTrybKola('detail');
       rysujMiejscowosci();
@@ -1888,6 +1902,7 @@ function render(){
     renderTomik(a, t);
     if(_fullMap){
       ustawZdjecie({ zdjecie: t.okladka }, `okładka: ${t.tytul}`);
+      setTimeout(()=>{ if(!zdjeciePokazane) toggleFoto(); }, 200);
     } else {
       ustawZdjecie({ zdjecie: t.okladka }, `okładka: ${t.tytul}`);
     }

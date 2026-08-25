@@ -83,7 +83,6 @@
   }
   body.mapa-full #leaflet-map{width:100vw!important;height:100vh!important}
   body.mapa-full .med-frame,
-  body.mapa-full .med-photo,
   body.mapa-full .luk-spacer,
   body.mapa-full .luk-ulubione,
   body.mapa-full .luk-foto,
@@ -96,7 +95,6 @@
     background:linear-gradient(180deg,rgba(15,15,24,.85) 0%,transparent 100%);
     padding-bottom:28px;
   }
-  body.mapa-full .stage-context{display:none!important}
   body.mapa-full .szukaj-blok{
     position:fixed!important;bottom:20px!important;left:50%!important;
     transform:translateX(-50%)!important;z-index:100!important;
@@ -134,7 +132,7 @@
   body.mapa-full .stage-context{
     display:block!important;
     position:fixed!important;top:80px!important;left:20px!important;
-    z-index:100!important;max-width:320px!important;
+    z-index:100!important;max-width:min(440px,45vw)!important;
     background:rgba(15,15,24,.88)!important;
     backdrop-filter:blur(12px)!important;
     border:1px solid rgba(201,162,39,.3)!important;
@@ -145,10 +143,10 @@
   }
   body.mapa-full .stage.mode-home .stage-context{display:none!important}
 
-  /* zdjęcie — prawy górny róg, nagłówek panelu */
+  /* zdjęcie — lewy górny róg, nagłówek panelu */
   body.mapa-full .med-photo{
     position:fixed!important;inset:auto!important;
-    top:80px!important;right:20px!important;
+    top:80px!important;left:20px!important;
     width:min(440px,45vw)!important;height:180px!important;
     border-radius:14px 14px 0 0!important;
     z-index:101!important;
@@ -159,6 +157,8 @@
     border-right:1px solid rgba(201,162,39,.25)!important;
     box-shadow:0 -4px 20px rgba(0,0,0,.4)!important;
     background-size:cover!important;background-position:center!important;
+    opacity:0!important;pointer-events:none!important;
+    transition:opacity .4s ease!important;
   }
   body.mapa-full .med-photo.show{
     opacity:1!important;pointer-events:auto!important;cursor:pointer!important;
@@ -167,7 +167,7 @@
   /* panel treści — pod zdjęciem, prawy bok */
   body.mapa-full .content{
     position:fixed!important;
-    top:260px!important;right:20px!important;bottom:20px!important;
+    top:260px!important;left:20px!important;bottom:20px!important;
     width:min(440px,45vw)!important;max-width:none!important;
     margin:0!important;padding:0 20px 20px!important;
     z-index:100!important;
@@ -1835,6 +1835,7 @@ function render(){
     }
     renderVillage(m);
     ustawZdjecie(m, `zdjęcie: ${m.nazwa}`);
+    if(_fullMap) setTimeout(()=>{ if(!zdjeciePokazane) toggleFoto(); }, 200);
     ustawKontekst({
       eyebrow:'miejscowość',
       title:m.nazwa, sub:m.podtytul
@@ -1850,6 +1851,7 @@ function render(){
     rysujWierszeAutora(a);         // FIOLETOWE kropki wierszy na tej samej mapie
     renderAuthor(stan.slug, a);
     ustawZdjecie(a, `zdjęcie: ${a.imie_nazwisko}`);   // koło przełącza mapę ↔ portret artysty
+    if(_fullMap) setTimeout(()=>{ if(!zdjeciePokazane) toggleFoto(); }, 200);
     // wracając z wiersza — przywróć otwarty wcześniej tomik
     if(stan.tomik) otworzTomikWZakladce(stan.slug, stan.tomik);
     ustawKontekst({
@@ -1882,6 +1884,7 @@ function render(){
     renderTomik(a, t);
     // koło: okładka tomiku ↔ mapa (przełącznik jak przy miejscowości/artyście)
     ustawZdjecie({ zdjecie: t.okladka }, `okładka: ${t.tytul}`);
+    if(_fullMap) setTimeout(()=>{ if(!zdjeciePokazane) toggleFoto(); }, 200);
     ustawKontekst({
       eyebrow:'tomik',
       title:t.tytul, sub:`${a.imie_nazwisko} · ${t.wiersze.length} ${t.wiersze.length===1?'wiersz':'wierszy'}`

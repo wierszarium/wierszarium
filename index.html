@@ -83,6 +83,7 @@
   }
   body.mapa-full #leaflet-map{width:100vw!important;height:100vh!important}
   body.mapa-full .med-frame,
+  body.mapa-full .med-photo,
   body.mapa-full .luk-spacer,
   body.mapa-full .luk-ulubione,
   body.mapa-full .luk-foto,
@@ -94,6 +95,44 @@
     position:fixed;top:0;left:0;right:0;z-index:100;
     background:linear-gradient(180deg,rgba(15,15,24,.85) 0%,transparent 100%);
     padding-bottom:28px;
+  }
+  body.mapa-full .stage-context{display:none!important}
+
+  /* ===================== DESKTOP: treść nad pełną mapą ===================== */
+  @media(min-width:721px){
+    body.mapa-full-detail .stage-context{
+      display:block!important;
+      position:fixed!important;top:80px!important;right:20px!important;
+      width:380px!important;z-index:51!important;
+      background:rgba(15,15,24,.93)!important;
+      border:1px solid rgba(201,162,39,.35)!important;
+      border-radius:14px 14px 0 0!important;
+      padding:18px 22px 12px!important;
+      backdrop-filter:blur(12px)!important;
+      box-shadow:0 -4px 20px rgba(0,0,0,.3)!important;
+      animation:panelSlideIn .4s cubic-bezier(.25,.7,.4,1) both!important;
+      max-width:380px!important;text-align:left!important;
+    }
+    body.mapa-full-detail .content{
+      position:fixed!important;right:20px!important;bottom:20px!important;
+      left:auto!important;width:380px!important;max-width:380px!important;
+      margin:0!important;padding:14px 22px 26px!important;
+      background:rgba(15,15,24,.90)!important;
+      border:1px solid rgba(201,162,39,.3)!important;
+      border-top:none!important;
+      border-radius:0 0 14px 14px!important;
+      box-shadow:0 12px 40px rgba(0,0,0,.45)!important;
+      backdrop-filter:blur(12px)!important;
+      z-index:50!important;
+      overflow-y:auto!important;
+      max-height:calc(100vh - 230px)!important;
+      animation:panelSlideIn .4s cubic-bezier(.25,.7,.4,1) both!important;
+    }
+    body.mapa-full-detail .content .divider{margin:0 0 12px!important}
+  }
+  @keyframes panelSlideIn{
+    from{opacity:0;transform:translateX(30px)}
+    to{opacity:1;transform:translateX(0)}
   }
   body.mapa-full .szukaj-blok{
     position:fixed!important;bottom:20px!important;left:50%!important;
@@ -127,71 +166,6 @@
     from{opacity:1}
     to{opacity:0}
   }
-
-  /* ---- FULLMAP: nakładki dla podstron (village/author/tomik/poem) ---- */
-  body.mapa-full .stage-context{
-    display:block!important;
-    position:fixed!important;top:80px!important;left:20px!important;
-    z-index:100!important;max-width:min(440px,45vw)!important;
-    background:rgba(15,15,24,.88)!important;
-    backdrop-filter:blur(12px)!important;
-    border:1px solid rgba(201,162,39,.3)!important;
-    border-radius:12px!important;
-    padding:14px 18px!important;
-    box-shadow:0 8px 32px rgba(0,0,0,.5)!important;
-    text-align:left!important;pointer-events:auto!important;
-  }
-  body.mapa-full .stage.mode-home .stage-context{display:none!important}
-
-  /* zdjęcie — lewy górny róg, nagłówek panelu */
-  body.mapa-full .med-photo{
-    position:fixed!important;inset:auto!important;
-    top:80px!important;left:20px!important;
-    width:min(440px,45vw)!important;height:180px!important;
-    border-radius:14px 14px 0 0!important;
-    z-index:101!important;
-    overflow:hidden!important;
-    border:none!important;
-    border-top:1px solid rgba(201,162,39,.25)!important;
-    border-left:1px solid rgba(201,162,39,.25)!important;
-    border-right:1px solid rgba(201,162,39,.25)!important;
-    box-shadow:0 -4px 20px rgba(0,0,0,.4)!important;
-    background-size:cover!important;background-position:center!important;
-    opacity:0!important;pointer-events:none!important;
-    transition:opacity .4s ease!important;
-  }
-  body.mapa-full .med-photo.show{
-    opacity:1!important;pointer-events:auto!important;cursor:pointer!important;
-  }
-
-  /* panel treści — pod zdjęciem, prawy bok */
-  body.mapa-full .content{
-    position:fixed!important;
-    top:260px!important;left:20px!important;bottom:20px!important;
-    width:min(440px,45vw)!important;max-width:none!important;
-    margin:0!important;padding:0 20px 20px!important;
-    z-index:100!important;
-    background:rgba(15,15,24,.92)!important;
-    backdrop-filter:blur(14px)!important;
-    border:1px solid rgba(201,162,39,.25)!important;
-    border-top:none!important;
-    border-radius:0 0 14px 14px!important;
-    box-shadow:0 8px 40px rgba(0,0,0,.55)!important;
-    overflow-y:auto!important;pointer-events:auto!important;
-  }
-  body.mapa-full .content:has(#panel-home.active){display:none!important}
-
-  /* elementy medalionu ukryte TYLKO w fullmap */
-  body.mapa-full .med-frame,
-  body.mapa-full .luk-spacer,
-  body.mapa-full .luk-ulubione,
-  body.mapa-full .luk-foto,
-  body.mapa-full .attrib-kolo{
-    opacity:0!important;pointer-events:none!important;
-  }
-  /* na home schowaj też zdjęcie i panel */
-  body.mapa-full .stage.mode-home .med-photo{opacity:0!important;pointer-events:none!important}
-  /* ---- KONIEC FULLMAP NAKŁADEK ---- */
   .crumbs button{
     background:none;border:1px solid rgba(243,234,214,.25);color:var(--parchment);
     padding:6px 14px;border-radius:var(--r-sm);font-family:'JetBrains Mono',monospace;font-size:12px;
@@ -1769,7 +1743,8 @@ function strefa(panel){
   return null;   // 'home', 'ulubione' itp. — bez grupowania
 }
 function przejdz(nowyStan){
-  if(!_fullMap) wylaczFullMap();          // ← oryginał; w trybie fullmap nie wyłączamy
+  // na desktopie: pełna mapa zostaje otwarta po kliknięciu w miejscowość
+  if(czyUrzadzeniePrzenosne()) wylaczFullMap();
   const obecnaStrefa = strefa(stan.panel);
   const docelowaStrefa = strefa(nowyStan.panel);
   if(obecnaStrefa !== null && obecnaStrefa === docelowaStrefa){
@@ -1809,7 +1784,11 @@ function render(){
   // łuk „ulubione" świeci tylko wtedy, gdy jesteśmy w tym panelu
   const lu = document.getElementById('luk-ulubione');
   if(lu) lu.classList.toggle('on', stan.panel === 'ulubione');
+  // desktop fullmap + panel detail: klasa na body steruje widocznością panelu bocznego
+  const jestDetail = (stan.panel !== 'home');
+  document.body.classList.toggle('mapa-full-detail', _fullMap && !czyUrzadzeniePrzenosne() && jestDetail);
   if(stan.panel === 'home'){
+    wylaczFullMap();   // zamknij pełną mapę przy powrocie do ekranu startowego
     pokazPanel('home');
     ustawZdjecie(null);
     rysujMiejscowosci();
@@ -1826,16 +1805,16 @@ function render(){
     pokazPanel('village');
     rysujMiejscowosci();
     ukryjWiersze();
-    // przy wejściu z dużej mapy: płynny przelot PO zmniejszeniu koła;
-    // przy skakaniu między miejscowościami: bez ruchu mapy
-    if(_fullMap){
-      mapa.flyTo([m.lat, m.lng], 14, {duration:1.8});
+    // DESKTOP + pełna mapa: zostaw fullmap, przesuń widok na miejscowość
+    if(_fullMap && !czyUrzadzeniePrzenosne()){
+      mapa.flyTo([m.lat, m.lng], 14, { duration:1.8, easeLinearity:0.25 });
     } else {
+      // przy wejściu z dużej mapy: płynny przelot PO zmniejszeniu koła;
+      // przy skakaniu między miejscowościami: bez ruchu mapy
       ustawTrybKola('detail', zDuzejMapy ? { lat:m.lat, lng:m.lng, zoom:14 } : null);
     }
     renderVillage(m);
-    ustawZdjecie(m, `zdjęcie: ${m.nazwa}`);
-    if(_fullMap) setTimeout(()=>{ if(!zdjeciePokazane) toggleFoto(); }, 200);
+    if(!_fullMap) ustawZdjecie(m, `zdjęcie: ${m.nazwa}`);
     ustawKontekst({
       eyebrow:'miejscowość',
       title:m.nazwa, sub:m.podtytul
@@ -1846,12 +1825,11 @@ function render(){
     const a = dane.artysci[stan.slug];
     const m = dane.miejscowosci.find(x=>x.slug===a.miejscowosc);
     pokazPanel('author');
-    if(!_fullMap) ustawTrybKola('detail');
+    if(!(_fullMap && !czyUrzadzeniePrzenosne())) ustawTrybKola('detail');
     rysujMiejscowosci();
     rysujWierszeAutora(a);         // FIOLETOWE kropki wierszy na tej samej mapie
     renderAuthor(stan.slug, a);
-    ustawZdjecie(a, `zdjęcie: ${a.imie_nazwisko}`);   // koło przełącza mapę ↔ portret artysty
-    if(_fullMap) setTimeout(()=>{ if(!zdjeciePokazane) toggleFoto(); }, 200);
+    if(!_fullMap) ustawZdjecie(a, `zdjęcie: ${a.imie_nazwisko}`);   // koło przełącza mapę ↔ portret artysty
     // wracając z wiersza — przywróć otwarty wcześniej tomik
     if(stan.tomik) otworzTomikWZakladce(stan.slug, stan.tomik);
     ustawKontekst({
@@ -1862,7 +1840,7 @@ function render(){
   }
   if(stan.panel === 'ulubione'){
     pokazPanel('ulubione');
-    if(!_fullMap) ustawTrybKola('detail');
+    ustawTrybKola('detail');
     rysujMiejscowosci();
     if(warstwaWierszy) warstwaWierszy.clearLayers();
     ustawZdjecie(null);
@@ -1878,13 +1856,12 @@ function render(){
     const a = dane.artysci[stan.autor];
     const t = a.tomiki.find(x=>x.slug===stan.slug);
     pokazPanel('tomik');
-    if(!_fullMap) ustawTrybKola('detail');
+    if(!(_fullMap && !czyUrzadzeniePrzenosne())) ustawTrybKola('detail');
     rysujMiejscowosci();
     rysujWierszeAutora(a);            // kropki wierszy autora zostają
     renderTomik(a, t);
     // koło: okładka tomiku ↔ mapa (przełącznik jak przy miejscowości/artyście)
-    ustawZdjecie({ zdjecie: t.okladka }, `okładka: ${t.tytul}`);
-    if(_fullMap) setTimeout(()=>{ if(!zdjeciePokazane) toggleFoto(); }, 200);
+    if(!_fullMap) ustawZdjecie({ zdjecie: t.okladka }, `okładka: ${t.tytul}`);
     ustawKontekst({
       eyebrow:'tomik',
       title:t.tytul, sub:`${a.imie_nazwisko} · ${t.wiersze.length} ${t.wiersze.length===1?'wiersz':'wierszy'}`
@@ -1915,13 +1892,13 @@ function render(){
     });
     if(trybSpaceru){
       ustawTrybKola('home');
-    } else if(!_fullMap){
-      ustawTrybKola('detail');
+    } else if(_fullMap && !czyUrzadzeniePrzenosne()){
+      // desktop fullmap: zostaw mapę pełnoekranową, przesuń widok
       rysujMiejscowosci();
       if(a) rysujWierszeAutora(a);
-      ustawZdjecie(null);
       centrujNadWierszem(w, stan.slug);
     } else {
+      ustawTrybKola('detail');
       rysujMiejscowosci();
       if(a) rysujWierszeAutora(a);
       ustawZdjecie(null);
@@ -3972,31 +3949,26 @@ let _fullMapAnimating = false;
 
 function toggleFullMap(){
   if(_fullMapAnimating) return;
+  // na telefonie: fullmap tylko z home
+  if(stan.panel !== 'home' && czyUrzadzeniePrzenosne()){ goHome(); return; }
   if(!_fullMap){
-    if(stan.panel !== 'home'){ goHome(); return; }
     _fullMap = true;
     document.body.classList.add('mapa-full');
     setTimeout(()=>{ if(mapa) mapa.invalidateSize({ animate:false }); }, 50);
   } else {
     _fullMapAnimating = true;
-    if(stan.panel !== 'home'){
-      historia = [];
-      stan = { panel:'home' };
-      document.getElementById('btn-back').disabled = true;
-    }
     document.body.classList.add('mapa-closing');
     setTimeout(()=>{
-      document.body.classList.remove('mapa-full','mapa-closing');
+      document.body.classList.remove('mapa-full','mapa-closing','mapa-full-detail');
       _fullMap = false;
       _fullMapAnimating = false;
-      render();
       setTimeout(()=>{ if(mapa) mapa.invalidateSize({ animate:false }); }, 50);
     }, 400);
   }
 }
 function wylaczFullMap(){
   if(!_fullMap) return;
-  document.body.classList.remove('mapa-full','mapa-closing');
+  document.body.classList.remove('mapa-full','mapa-closing','mapa-full-detail');
   _fullMap = false;
   _fullMapAnimating = false;
   setTimeout(()=>{ if(mapa) mapa.invalidateSize({ animate:false }); }, 50);

@@ -103,20 +103,21 @@
     body.mapa-full-detail .stage-context{
       display:block!important;
       position:fixed!important;top:80px!important;right:20px!important;
-      width:380px!important;z-index:51!important;
+      width:380px!important;max-width:380px!important;z-index:51!important;
       background:rgba(15,15,24,.93)!important;
       border:1px solid rgba(201,162,39,.35)!important;
+      border-bottom:none!important;
       border-radius:14px 14px 0 0!important;
-      padding:18px 22px 12px!important;
+      padding:20px 24px 12px!important;
       backdrop-filter:blur(12px)!important;
-      box-shadow:0 -4px 20px rgba(0,0,0,.3)!important;
+      box-shadow:0 4px 30px rgba(0,0,0,.4)!important;
       animation:panelSlideIn .4s cubic-bezier(.25,.7,.4,1) both!important;
-      max-width:380px!important;text-align:left!important;
+      text-align:left!important;
     }
     body.mapa-full-detail .content{
-      position:fixed!important;right:20px!important;bottom:20px!important;
+      position:fixed!important;top:auto!important;right:20px!important;bottom:20px!important;
       left:auto!important;width:380px!important;max-width:380px!important;
-      margin:0!important;padding:14px 22px 26px!important;
+      margin:0!important;padding:0 24px 26px!important;
       background:rgba(15,15,24,.90)!important;
       border:1px solid rgba(201,162,39,.3)!important;
       border-top:none!important;
@@ -125,7 +126,7 @@
       backdrop-filter:blur(12px)!important;
       z-index:50!important;
       overflow-y:auto!important;
-      max-height:calc(100vh - 230px)!important;
+      max-height:calc(100vh - 220px)!important;
       animation:panelSlideIn .4s cubic-bezier(.25,.7,.4,1) both!important;
     }
     body.mapa-full-detail .content .divider{margin:0 0 12px!important}

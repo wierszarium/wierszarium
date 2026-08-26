@@ -103,19 +103,19 @@
      i panel treści pojawiają się nad nią — tak jak normalny układ detail,
      tylko bez ciemnego tła (mapę widać pod spodem). */
   @media(min-width:721px){
-    /* obręcz (ramka) — widoczna, pozycjonowana na stałe */
+    /* obręcz (ramka) — prawa strona, góra */
     body.mapa-full-detail .med-frame{
       opacity:.55!important;pointer-events:none!important;
       position:fixed!important;inset:auto!important;
       width:324px!important;height:324px!important;
-      top:88px!important;left:28px!important;
+      top:88px!important;right:28px!important;left:auto!important;
       z-index:510!important;border-radius:50%!important;
     }
-    /* zdjęcie w kółku — fixed, czeka na .show (auto po 3s) */
+    /* zdjęcie w kółku — prawa strona, góra */
     body.mapa-full-detail .med-photo{
       position:fixed!important;inset:auto!important;
       width:300px!important;height:300px!important;
-      top:100px!important;left:40px!important;
+      top:100px!important;right:40px!important;left:auto!important;
       z-index:520!important;border-radius:50%!important;
       transition:opacity .8s ease!important;
     }
@@ -129,23 +129,22 @@
       opacity:0!important;pointer-events:none!important;
     }
     body.mapa-full-detail .attrib-kolo{opacity:0!important}
-    /* kontekst: nazwa miejscowości, podtytuł */
+    /* kontekst: nazwa miejscowości, podtytuł — lewa strona, góra */
     body.mapa-full-detail .stage-context{
       display:block!important;
-      position:fixed!important;top:105px!important;left:390px!important;
-      right:40px!important;z-index:15!important;
-      max-width:540px!important;text-align:left!important;
+      position:fixed!important;top:90px!important;left:30px!important;
+      right:auto!important;z-index:15!important;
+      max-width:420px!important;text-align:left!important;
       padding-top:6px!important;
     }
-    /* panel treści (zakładki, opis, pisarze…) */
+    /* panel treści — lewa strona, pod kontekstem */
     body.mapa-full-detail .content{
       position:fixed!important;
-      top:230px!important;left:390px!important;
-      right:40px!important;bottom:30px!important;
-      z-index:15!important;max-width:540px!important;
+      top:210px!important;left:30px!important;
+      right:auto!important;bottom:30px!important;
+      z-index:15!important;width:420px!important;max-width:420px!important;
       overflow-y:auto!important;
-      margin:0!important;padding:0 6px 30px!important;
-      /* subtelne przyciemnienie pod tekstem, żeby był czytelny */
+      margin:0!important;padding:12px 18px 30px!important;
       background:rgba(15,15,24,.55)!important;
       border-radius:var(--r-md)!important;
       backdrop-filter:blur(6px)!important;

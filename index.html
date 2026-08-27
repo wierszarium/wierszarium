@@ -3339,11 +3339,7 @@ function pokazUtworWZakladce(a, slug){
     document.getElementById('a-tomik-wiersze').classList.add('hidden');
     document.getElementById('a-tomiki').classList.add('hidden');
     document.getElementById('a-tomiki-sekcja').appendChild(utwor);
-    // przycisk „Wiersze" zostaje widoczny i klikalny → wraca do listy tytułów
-    const kw = document.getElementById('krok-wiersze');
-    kw.classList.remove('hidden');
-    kw.classList.add('active');
-    kw.onclick = ()=> wrocDoWierszyTomiku(a.slug, tomikZWierszem.slug);
+    document.getElementById('krok-wiersze').onclick = ()=> wrocDoWierszyTomiku(a.slug, tomikZWierszem.slug);
   } else {
     // wiersz luźny → zakładka Wiersze (bez zmian w jej działaniu)
     pokazZakladke('a-tab-wiersze');

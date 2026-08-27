@@ -3092,6 +3092,8 @@ function renderAuthor(slug, a){
   const kw = document.getElementById('krok-wiersze');
   kw.classList.add('hidden');
   kw.classList.remove('active');
+  kw.style.cssText = '';
+  kw.textContent = 'Wiersze';
 
   const sekcjaTomiki = document.getElementById('a-tomiki-sekcja');
   const gridTomiki = document.getElementById('a-tomiki');
@@ -3205,6 +3207,8 @@ function wrocDoTomikow(){
   const kw = document.getElementById('krok-wiersze');
   kw.classList.add('hidden');
   kw.classList.remove('active');
+  kw.style.cssText = '';
+  kw.textContent = 'Wiersze';
 
   // wracamy do zdjęcia autora i jego wszystkich kropek
   const a = dane.artysci[stan.slug];
@@ -3340,12 +3344,15 @@ function pokazUtworWZakladce(a, slug){
     document.getElementById('a-tomik-wiersze').classList.add('hidden');
     document.getElementById('a-tomiki').classList.add('hidden');
     document.getElementById('a-tomiki-sekcja').appendChild(utwor);
-    // przycisk z nazwą tomiku zostaje widoczny — klik wraca do listy tytułów
-    document.getElementById('krok-wiersze').onclick = ()=>{
-      document.getElementById('a-utwor').classList.add('hidden');
-      zatrzymajDzwiek();
-      document.getElementById('a-tomik-wiersze').classList.remove('hidden');
-    };
+    document.getElementById('krok-wiersze').classList.remove('active');
+    document.getElementById('krok-wiersze').onclick = ()=> wrocDoWierszyTomiku(a.slug, tomikZWierszem.slug);
+    // wymuszamy widoczność przycisku z nazwą tomiku (inline style nadpisuje .hidden)
+    const kw = document.getElementById('krok-wiersze');
+    kw.textContent = tomikZWierszem.tytul;
+    kw.style.display = 'inline';
+    kw.style.opacity = '1';
+    kw.style.color = 'var(--gold-soft)';
+    kw.style.cursor = 'pointer';
   } else {
     // wiersz luźny → zakładka Wiersze (bez zmian w jej działaniu)
     pokazZakladke('a-tab-wiersze');

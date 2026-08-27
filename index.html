@@ -3339,6 +3339,7 @@ function pokazUtworWZakladce(a, slug){
     document.getElementById('a-tomik-wiersze').classList.add('hidden');
     document.getElementById('a-tomiki').classList.add('hidden');
     document.getElementById('a-tomiki-sekcja').appendChild(utwor);
+    document.getElementById('krok-wiersze').classList.remove('active');
     document.getElementById('krok-wiersze').onclick = ()=> wrocDoWierszyTomiku(a.slug, tomikZWierszem.slug);
   } else {
     // wiersz luźny → zakładka Wiersze (bez zmian w jej działaniu)

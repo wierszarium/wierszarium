@@ -84,12 +84,14 @@
   body.mapa-full #leaflet-map{width:100vw!important;height:100vh!important}
   body.mapa-full .med-frame,
   body.mapa-full .med-photo,
-  body.mapa-full .luk-spacer,
   body.mapa-full .luk-ulubione,
   body.mapa-full .luk-foto,
   body.mapa-full .attrib-kolo{
     opacity:0!important;pointer-events:none!important;
     transition:opacity .3s ease!important;
+  }
+  body.mapa-full .luk-spacer{
+    display:none!important;
   }
   body.mapa-full .topbar{
     position:fixed;top:0;left:0;right:0;z-index:100;
@@ -126,7 +128,7 @@
     body.mapa-full-detail .luk-spacer,
     body.mapa-full-detail .luk-ulubione,
     body.mapa-full-detail .luk-foto{
-      opacity:0!important;pointer-events:none!important;
+      display:none!important;
     }
     body.mapa-full-detail .attrib-kolo{opacity:0!important}
     /* kontekst: nazwa miejscowości, podtytuł — lewa strona, góra */
@@ -886,6 +888,11 @@
      wokół mapy. Chowamy go przy kliknięciu myszą/palcem, zostawiamy dla klawiatury. */
   .luk-spacer:focus, .luk-foto:focus, .luk-ulubione:focus{outline:none}
   .luk-spacer:focus-visible, .luk-foto:focus-visible, .luk-ulubione:focus-visible{outline:2px solid var(--gold-soft);outline-offset:2px}
+
+  /* DESKTOP: łuk spacer nie ma sensu na komputerze — ukryj kompletnie */
+  @media(min-width:721px){
+    .luk-spacer{display:none!important}
+  }
 
   /* przyciski trybu słuchania w spacerze */
   .tryby-sluchania{display:flex;gap:10px;justify-content:center;margin:16px 0 4px;flex-wrap:wrap}

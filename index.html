@@ -179,6 +179,8 @@
     from{clip-path:circle(35% at 50% 45%)}
     to{clip-path:circle(150% at 50% 50%)}
   }
+  /* na starcie: bez animacji, od razu pełna mapa */
+  body.mapa-full.no-anim .medallion{animation:none!important;clip-path:none!important}
   body.mapa-closing .medallion{
     animation:mapCollapse .4s ease forwards!important;
   }
@@ -808,6 +810,16 @@
     text-align:center;margin-top:10px;min-height:16px;
     font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.05em;
   }
+  .btn-ulubione-home{
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    margin:12px auto 0;padding:8px 22px;
+    background:rgba(201,162,39,.08);border:1px solid rgba(201,162,39,.3);
+    border-radius:var(--r-md);color:var(--gold-soft);
+    font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.05em;
+    cursor:pointer;transition:background .25s var(--ease),border-color .25s var(--ease),color .25s var(--ease);
+  }
+  .btn-ulubione-home:hover{background:rgba(201,162,39,.16);border-color:var(--gold);color:var(--parchment)}
+  .btn-ulubione-home.on{background:rgba(201,162,39,.18);border-color:var(--gold);color:var(--parchment)}
   .szukaj-wynik-rzad{padding:3px 0;color:var(--parchment-dim);opacity:.85}
   .szukaj-wynik-nazwa{color:var(--gold-soft)}
   .szukaj-wynik-typ{opacity:.6}
@@ -1091,7 +1103,7 @@
   .cf-plansza code{font-family:'JetBrains Mono',monospace;font-size:13px;background:rgba(0,0,0,.3);padding:2px 6px;border-radius:4px;color:var(--gold-soft)}
 </style>
 </head>
-<body>
+<body class="mapa-full no-anim">
 
 <!-- ====== INTRO ====== -->
 <div id="intro" onclick="zamknijIntro()">
@@ -1251,6 +1263,9 @@
         </div>
       </div>
       <div class="szukaj-wynik-info" id="szukaj-wynik-info"></div>
+      <button class="btn-ulubione-home" id="btn-ulubione-home" onclick="pokazUlubione()">
+        ♥ ulubione
+      </button>
     </div>
   </div>
 
@@ -1812,11 +1827,12 @@ function render(){
   // łuk „ulubione" świeci tylko wtedy, gdy jesteśmy w tym panelu
   const lu = document.getElementById('luk-ulubione');
   if(lu) lu.classList.toggle('on', stan.panel === 'ulubione');
+  const luHome = document.getElementById('btn-ulubione-home');
+  if(luHome) luHome.classList.toggle('on', stan.panel === 'ulubione');
   // DESKTOP: klasa mapa-full-detail gdy pełna mapa + panel nie-home
   const desktopFullDetail = _fullMap && !czyUrzadzeniePrzenosne() && stan.panel !== 'home';
   document.body.classList.toggle('mapa-full-detail', desktopFullDetail);
   if(stan.panel === 'home'){
-    wylaczFullMap();
     pokazPanel('home');
     ustawZdjecie(null);
     rysujMiejscowosci();
@@ -3968,11 +3984,12 @@ async function udostepnijStrone(link){
 }
 
 /* ============ TRYB PEŁNOEKRANOWEJ MAPY ============ */
-let _fullMap = false;
+let _fullMap = true;
 let _fullMapAnimating = false;
 
 function toggleFullMap(){
   if(_fullMapAnimating) return;
+  document.body.classList.remove('no-anim');
   // na telefonie: fullmap tylko z ekranu home
   if(stan.panel !== 'home' && czyUrzadzeniePrzenosne()){ goHome(); return; }
   if(!_fullMap){
@@ -4015,6 +4032,8 @@ async function startApp(){
     const luk = document.getElementById('luk-spacer');
     if(luk) luk.style.opacity = '.4';
   }
+  // mapa jest już fullscreen (klasa na body + _fullMap = true)
+  setTimeout(()=>{ if(mapa) mapa.invalidateSize({ animate:false }); }, 50);
 }
 startApp();
 </script>

@@ -375,6 +375,41 @@
     padding:20px 0 26px;border-top:1px solid rgba(243,234,214,.14);border-bottom:1px solid rgba(243,234,214,.14);margin:14px 0 18px;font-style:italic;
   }
   .poem-nav{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+  /* ===================== OVERLAY WIERSZA (desktop, nad mapą) ===================== */
+  #poem-overlay{
+    display:none;
+    position:fixed;
+    top:50%;left:50%;transform:translate(-50%,-50%);
+    z-index:600;
+    width:min(580px,90vw);max-height:80vh;
+    overflow-y:auto;
+    background:rgba(15,15,24,.92);
+    border:1px solid rgba(201,162,39,.35);
+    border-radius:var(--r-lg);
+    padding:28px 32px 24px;
+    box-shadow:0 20px 60px rgba(0,0,0,.7);
+    backdrop-filter:blur(12px);
+    animation:poemOverlayIn .35s var(--ease) both;
+  }
+  #poem-overlay.open{display:block}
+  @keyframes poemOverlayIn{from{opacity:0;transform:translate(-50%,-50%) scale(.95)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+  #poem-overlay .poem-overlay-close{
+    position:sticky;top:0;float:right;z-index:5;
+    width:36px;height:36px;display:flex;align-items:center;justify-content:center;
+    background:rgba(15,15,24,.8);border:1px solid rgba(243,234,214,.2);border-radius:var(--r-sm);
+    color:var(--parchment);cursor:pointer;font-size:18px;
+    transition:border-color .2s,background .2s;margin:-4px -8px 0 0;
+  }
+  #poem-overlay .poem-overlay-close:hover{border-color:var(--gold-soft);background:rgba(201,162,39,.15)}
+  #poem-overlay .poem-overlay-title{
+    font-family:'Fraunces',serif;font-size:24px;font-weight:600;
+    color:var(--parchment);margin:0 0 4px;line-height:1.2;
+  }
+  #poem-overlay .poem-overlay-sub{
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.05em;
+    color:var(--gold-soft);margin-bottom:16px;
+  }
   .btn:disabled{opacity:.3;pointer-events:none}
   .btn.playing{background:var(--gold);color:var(--ink-deep)}
   .btn{
@@ -1818,8 +1853,21 @@ function goHome(){
 let poprzedniPanel = null;
 
 function render(){
-  // wychodząc z wiersza gdziekolwiek indziej — ucisz dźwięk
-  if(poprzedniPanel === 'poem' && stan.panel !== 'poem') zatrzymajDzwiek();
+  // wychodząc z wiersza gdziekolwiek indziej — ucisz dźwięk + zamknij overlay
+  if(poprzedniPanel === 'poem' && stan.panel !== 'poem'){
+    zatrzymajDzwiek();
+    // zamknij overlay bez nawigacji (bo już nawigujemy)
+    const _po = document.getElementById('poem-overlay');
+    if(_po && _po.classList.contains('open')){
+      _po.classList.remove('open');
+      const _u = document.getElementById('a-utwor');
+      if(_u){
+        const _ts = document.getElementById('a-tomiki-sekcja');
+        if(_ts) _ts.appendChild(_u);
+        _u.classList.add('hidden');
+      }
+    }
+  }
   // jeśli grał pokaz całego tomiku, a opuszczamy widok autora — zatrzymaj go
   if(typeof tomikGra !== 'undefined' && tomikGra && stan.panel !== 'author'){
     zatrzymajOdtwarzanieTomiku();
@@ -1914,35 +1962,76 @@ function render(){
     const autorSlug = znajdzAutoraWiersza(stan.slug);
     const a = autorSlug ? dane.artysci[autorSlug] : null;
 
-    if(a && !trybSpaceru){
+    // DESKTOP fullmap → wiersz w overlay na środku, panel boczny zachowuje listę wierszy
+    if(desktopFullDetail && a && !trybSpaceru){
       pokazPanel('author');
       renderAuthor(autorSlug, a);
-      pokazUtworWZakladce(a, stan.slug);       // wiersz w Twórczości albo w Wierszach
-    } else {
-      pokazPanel('author');
-      pokazZakladke('a-tab-wiersze');
-      document.getElementById('a-utwor').classList.remove('hidden');
-    }
+      // pokaż tomik z listą wierszy (ale NIE pokazuj a-utwor w panelu)
+      const tomikZWierszem = (a.tomiki||[]).find(t => t.wiersze.includes(stan.slug));
+      if(tomikZWierszem){
+        pokazZakladke('a-tab-works');
+        otworzTomikWZakladce(autorSlug, tomikZWierszem.slug);
+        // lista wierszy tomiku widoczna
+        document.getElementById('a-tomik-wiersze').classList.remove('hidden');
+        document.getElementById('a-tomiki').classList.add('hidden');
+      } else {
+        pokazZakladke('a-tab-wiersze');
+        document.getElementById('a-works').classList.remove('hidden');
+      }
+      // a-utwor chowany w panelu
+      document.getElementById('a-utwor').classList.add('hidden');
 
-    document.getElementById('p-body').textContent = w.tresc;
-    ustawPrzyciskiWiersza();
-    ustawAkcjeWiersza(stan.slug);
-    ustawKontekst({
-      eyebrow: stan.zeSpaceru ? 'jesteś na miejscu' : 'utwór',
-      title:w.tytul, sub:`${w.data_powstania} · ${w.zrodlo}`
-    });
-    if(trybSpaceru){
-      ustawTrybKola('home');
-    } else if(desktopFullDetail){
+      // treść wiersza → overlay na środku ekranu
+      const overlay = document.getElementById('poem-overlay');
+      const utwor = document.getElementById('a-utwor');
+      document.getElementById('po-title').textContent = w.tytul;
+      document.getElementById('po-sub').textContent = `${w.data_powstania || ''} · ${w.zrodlo || ''}`;
+      // przenieś a-utwor do overlay
+      const poBody = document.getElementById('po-body');
+      poBody.innerHTML = '';
+      poBody.appendChild(utwor);
+      utwor.classList.remove('hidden');
+      overlay.classList.add('open');
+
+      document.getElementById('p-body').textContent = w.tresc;
+      ustawPrzyciskiWiersza();
+      ustawAkcjeWiersza(stan.slug);
+      ustawKontekst({
+        eyebrow:'autor',
+        title:a.imie_nazwisko, sub:[a.lata, a.pochodzenie].filter(Boolean).join(' · ')
+      });
       rysujMiejscowosci();
-      if(a) rysujWierszeAutora(a);
+      rysujWierszeAutora(a);
       centrujNadWierszem(w, stan.slug);
     } else {
-      ustawTrybKola('detail');
-      rysujMiejscowosci();
-      if(a) rysujWierszeAutora(a);
-      ustawZdjecie(null);
-      centrujNadWierszem(w, stan.slug);
+      // TELEFON / nie-fullmap → stare zachowanie
+      zamknijPoemOverlay();
+      if(a && !trybSpaceru){
+        pokazPanel('author');
+        renderAuthor(autorSlug, a);
+        pokazUtworWZakladce(a, stan.slug);
+      } else {
+        pokazPanel('author');
+        pokazZakladke('a-tab-wiersze');
+        document.getElementById('a-utwor').classList.remove('hidden');
+      }
+
+      document.getElementById('p-body').textContent = w.tresc;
+      ustawPrzyciskiWiersza();
+      ustawAkcjeWiersza(stan.slug);
+      ustawKontekst({
+        eyebrow: stan.zeSpaceru ? 'jesteś na miejscu' : 'utwór',
+        title:w.tytul, sub:`${w.data_powstania} · ${w.zrodlo}`
+      });
+      if(trybSpaceru){
+        ustawTrybKola('home');
+      } else {
+        ustawTrybKola('detail');
+        rysujMiejscowosci();
+        if(a) rysujWierszeAutora(a);
+        ustawZdjecie(null);
+        centrujNadWierszem(w, stan.slug);
+      }
     }
   }
   poprzedniPanel = stan.panel;
@@ -2903,6 +2992,32 @@ document.addEventListener('visibilitychange', ()=>{
 
 /* ============ INTRO ============ */
 let _introZamkniete = false;
+
+/* ============ POEM OVERLAY (desktop) ============ */
+function zamknijPoemOverlay(){
+  const overlay = document.getElementById('poem-overlay');
+  if(!overlay || !overlay.classList.contains('open')) return;
+  overlay.classList.remove('open');
+  // zwróć a-utwor do oryginalnego miejsca w panelu autora
+  const utwor = document.getElementById('a-utwor');
+  if(utwor){
+    const tomikiSekcja = document.getElementById('a-tomiki-sekcja');
+    if(tomikiSekcja) tomikiSekcja.appendChild(utwor);
+    utwor.classList.add('hidden');
+  }
+  // wróć do panelu autora (z listą wierszy)
+  if(stan.panel === 'poem'){
+    const autorSlug = znajdzAutoraWiersza(stan.slug);
+    if(autorSlug){
+      zatrzymajDzwiek();
+      const a = dane.artysci[autorSlug];
+      const tomikZWierszem = (a.tomiki||[]).find(t => t.wiersze.includes(stan.slug));
+      stan = { panel:'author', slug:autorSlug, tomik: tomikZWierszem ? tomikZWierszem.slug : undefined };
+      render();
+    }
+  }
+}
+
 function zamknijIntro(){
   if(_introZamkniete) return;
   _introZamkniete = true;
@@ -4037,6 +4152,14 @@ async function startApp(){
 }
 startApp();
 </script>
+
+<!-- ===== OVERLAY WIERSZA (desktop) ===== -->
+<div id="poem-overlay">
+  <button class="poem-overlay-close" onclick="zamknijPoemOverlay()" aria-label="zamknij">✕</button>
+  <div class="poem-overlay-title" id="po-title"></div>
+  <div class="poem-overlay-sub" id="po-sub"></div>
+  <div id="po-body"></div>
+</div>
 
 <!-- ===== PLANSZA CLOUDFLARE ===== -->
 <div class="cf-overlay" id="cf-overlay" onclick="zamknijCloudflare()">

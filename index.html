@@ -164,7 +164,8 @@
   body.mapa-full .szukaj-blok{
     position:fixed!important;bottom:20px!important;left:50%!important;
     transform:translateX(-50%)!important;z-index:100!important;
-    width:90vw!important;max-width:420px!important;
+    width:auto!important;max-width:90vw!important;
+    display:flex!important;align-items:center!important;gap:10px!important;
     background:rgba(15,15,24,.9)!important;
     border:2px solid rgba(0,0,0,.8)!important;
     border-radius:12px!important;padding:8px 12px!important;
@@ -174,7 +175,10 @@
   body.mapa-full .szukaj-pole-wrap{
     border-color:rgba(201,162,39,.5)!important;
     background:rgba(0,0,0,.4)!important;
+    flex:0 0 auto!important;width:320px!important;
   }
+  body.mapa-full .szukaj-wynik-info{display:none!important}
+  body.mapa-full .btn-ulubione-home{margin:0!important;flex-shrink:0!important}
   body.mapa-full #btn-fullmap{
     opacity:1!important;background:var(--gold)!important;color:var(--lead)!important;
     border-color:var(--gold)!important;
@@ -196,9 +200,10 @@
     to{opacity:0}
   }
   .crumbs button{
-    background:none;border:2px solid rgba(243,234,214,.3);color:var(--parchment);
+    background:rgba(30,30,40,.55);border:2px solid rgba(243,234,214,.3);color:var(--parchment);
     padding:12px 24px;border-radius:var(--r-md);font-family:'JetBrains Mono',monospace;font-size:18px;
-    letter-spacing:.05em;transition:border-color .25s var(--ease), background .25s var(--ease);
+    letter-spacing:.05em;backdrop-filter:blur(4px);
+    transition:border-color .25s var(--ease), background .25s var(--ease);
   }
   .crumbs button:hover{border-color:var(--gold-soft);background:rgba(201,162,39,.1)}
   .crumbs button:disabled{opacity:.25;pointer-events:none}
@@ -472,8 +477,8 @@
     .hamburger-btn{
       display:flex;align-items:center;justify-content:center;
       width:64px;height:64px;padding:0;margin-right:12px;flex-shrink:0;
-      background:none;border:2px solid rgba(243,234,214,.3);border-radius:var(--r-md);
-      color:var(--parchment);cursor:pointer;
+      background:rgba(30,30,40,.55);border:2px solid rgba(243,234,214,.3);border-radius:var(--r-md);
+      color:var(--parchment);cursor:pointer;backdrop-filter:blur(4px);
       transition:border-color .25s var(--ease),background .25s var(--ease);
     }
     .hamburger-btn:hover{border-color:var(--gold-soft);background:rgba(201,162,39,.1)}

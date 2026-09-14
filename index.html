@@ -315,6 +315,19 @@
   }
   .tab-btn.active{color:var(--gold-soft);border-bottom-color:var(--gold)}
   .tab-btn:hover{color:var(--parchment)}
+
+  /* nawigacja miejscowości nad zakładkami pisarza (desktop) */
+  .village-context-tabs{
+    border-bottom:1px solid rgba(201,162,39,.2);
+    margin-bottom:0;padding-bottom:0;
+  }
+  .village-context-tabs.hidden{display:none}
+  .village-context-tabs .tab-btn{
+    font-size:11px;letter-spacing:.07em;opacity:.7;
+    border-bottom-width:2px;
+  }
+  .village-context-tabs .tab-btn.active{opacity:1}
+  .village-context-tabs .tab-btn:hover{opacity:1}
   .tab-panel{display:none}
   .tab-panel.active{display:block;animation:fadeIn .35s ease}
 
@@ -1325,6 +1338,13 @@
   </div>
 
   <div class="panel" id="panel-author">
+    <!-- Rząd 1: nawigacja miejscowości (desktop, widoczny gdy autor w kontekście miejscowości) -->
+    <div class="tabs village-context-tabs hidden" id="village-ctx-tabs">
+      <button class="tab-btn" onclick="wrocDoMiejscowosci('v-tab-info')">Miejscowość</button>
+      <button class="tab-btn active" onclick="wrocDoMiejscowosci('v-tab-artists')">Pisarze</button>
+      <button class="tab-btn" onclick="wrocDoMiejscowosci('v-tab-kontakt')">Kontakt</button>
+    </div>
+    <!-- Rząd 2: zakładki pisarza -->
     <div class="tabs">
       <button class="tab-btn active" data-tab="a-tab-bio" onclick="switchTab(this)">Biografia</button>
       <button class="tab-btn" data-tab="a-tab-works" onclick="switchTab(this)">Twórczość</button>
@@ -1880,6 +1900,9 @@ function render(){
   // DESKTOP: klasa mapa-full-detail gdy pełna mapa + panel nie-home
   const desktopFullDetail = _fullMap && !czyUrzadzeniePrzenosne() && stan.panel !== 'home';
   document.body.classList.toggle('mapa-full-detail', desktopFullDetail);
+  // ukryj pasek nawigacji miejscowości — pokaże się tylko w bloku 'author' gdy trzeba
+  const _ctxT = document.getElementById('village-ctx-tabs');
+  if(_ctxT) _ctxT.classList.add('hidden');
   if(stan.panel === 'home'){
     pokazPanel('home');
     ustawZdjecie(null);
@@ -1927,6 +1950,13 @@ function render(){
       title:a.imie_nazwisko, sub:[a.lata, a.pochodzenie].filter(Boolean).join(' · ')
     });
     pokazZakladke(zakladkaPisarza);
+
+    // DESKTOP: pokaż pasek nawigacji miejscowości jeśli autor ma kontekst wioski
+    const ctxTabs = document.getElementById('village-ctx-tabs');
+    const maKontekstWsi = desktopFullDetail && historia.some(h => h.panel === 'village');
+    if(ctxTabs){
+      ctxTabs.classList.toggle('hidden', !maKontekstWsi);
+    }
   }
   if(stan.panel === 'ulubione'){
     pokazPanel('ulubione');
@@ -2994,6 +3024,25 @@ document.addEventListener('visibilitychange', ()=>{
 let _introZamkniete = false;
 
 /* ============ POEM OVERLAY (desktop) ============ */
+
+/* powrót z pisarza do miejscowości (desktop village-context-tabs) */
+function wrocDoMiejscowosci(tabId){
+  // szukaj miejscowości w historii
+  let villageSlug = null;
+  for(let i = historia.length - 1; i >= 0; i--){
+    if(historia[i].panel === 'village'){ villageSlug = historia[i].slug; break; }
+  }
+  if(!villageSlug) return;
+  // wróć do panelu miejscowości
+  stan = { panel:'village', slug:villageSlug, otwartaZakladka:tabId };
+  historia = historia.filter(h => h.panel !== 'author' || h.slug !== stan.slug);
+  render();
+  document.getElementById('btn-back').disabled = (historia.length === 0);
+  // przełącz na żądaną zakładkę
+  const tabBtn = document.querySelector(`#panel-village .tab-btn[data-tab="${tabId}"]`);
+  if(tabBtn) switchTab(tabBtn);
+}
+
 function zamknijPoemOverlay(){
   const overlay = document.getElementById('poem-overlay');
   if(!overlay || !overlay.classList.contains('open')) return;

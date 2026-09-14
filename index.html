@@ -51,11 +51,13 @@
 
   /* ===================== TOP BAR ===================== */
   .topbar{
-    display:flex;align-items:center;justify-content:space-between;
-    padding:22px 28px 10px;max-width:1000px;margin:0 auto;
+    display:flex;align-items:center;justify-content:center;
+    padding:22px 28px 10px;max-width:none;margin:0;
     position:relative;z-index:5;
   }
-  .brand{display:flex;flex-direction:column;gap:2px}
+  .topbar .hamburger-btn{position:absolute;left:28px;top:50%;transform:translateY(-50%)}
+  .topbar .crumbs{position:absolute;right:28px;top:50%;transform:translateY(-50%)}
+  .brand{display:flex;flex-direction:column;gap:2px;align-items:center;text-align:center}
   .brand .display{font-size:22px;color:var(--parchment)}
   .brand .meta{color:var(--gold-soft)}
   .crumbs{display:flex;align-items:center;gap:8px}
@@ -97,7 +99,7 @@
   }
   body.mapa-full .topbar{
     position:fixed;top:0;left:0;right:0;z-index:100;
-    background:linear-gradient(180deg,rgba(15,15,24,.85) 0%,transparent 100%);
+    background:linear-gradient(180deg,rgba(70,140,210,.78) 0%,rgba(100,170,235,.40) 55%,transparent 100%);
     padding-bottom:28px;
   }
   body.mapa-full .stage-context{display:none!important}
@@ -756,6 +758,8 @@
   }
   @media(max-width:600px){
     .topbar{padding:16px 18px 8px}
+    .topbar .hamburger-btn{left:18px}
+    .topbar .crumbs{right:18px}
     .content{padding:0 18px 60px}
     .poem-body{font-size:17px}
     .attrib-kolo{font-size:8px;margin-top:11px}
@@ -1253,14 +1257,12 @@
 </div>
 
 <div class="topbar">
-  <div style="display:flex;align-items:center">
-    <button class="hamburger-btn" onclick="otworzMenu()" aria-label="menu">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
-    </button>
-    <div class="brand">
-      <div class="display">Pod Wielkim Dachem Nieba</div>
-      <div class="meta">mapa poezji regionalnej</div>
-    </div>
+  <button class="hamburger-btn" onclick="otworzMenu()" aria-label="menu">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
+  </button>
+  <div class="brand">
+    <div class="display">Pod Wielkim Dachem Nieba</div>
+    <div class="meta">mapa poezji regionalnej</div>
   </div>
   <div class="crumbs">
     <button id="btn-back" class="btn-back" onclick="goBack()" aria-label="wstecz">

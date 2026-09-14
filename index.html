@@ -67,6 +67,8 @@
     line-height:1;white-space:nowrap;transition:opacity .2s ease,border-color .2s ease,transform .2s ease;
   }
   #btn-fullmap:hover{opacity:1;border-color:var(--gold-soft);transform:translateX(-50%) scale(1.1)}
+  /* desktop: przycisk fullmap niepotrzebny (mapa zawsze pełna) */
+  @media(min-width:721px){ #btn-fullmap{display:none!important} }
 
   /* ===================== TRYB PEŁNOEKRANOWEJ MAPY ===================== */
   body.mapa-full .stage{max-width:none!important;padding:0!important}

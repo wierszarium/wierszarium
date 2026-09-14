@@ -328,6 +328,24 @@
   }
   .village-context-tabs .tab-btn.active{opacity:1}
   .village-context-tabs .tab-btn:hover{opacity:1}
+
+  /* pasek z nazwiskiem artysty — widoczny w panelu bocznym gdy wiersz otwarty */
+  .author-ctx-bar{
+    padding:10px 4px;
+    border-bottom:1px solid rgba(201,162,39,.2);
+    margin-bottom:0;
+  }
+  .author-ctx-bar.hidden{display:none}
+  .author-ctx-link{
+    display:inline-flex;align-items:center;gap:6px;
+    background:none;border:none;cursor:pointer;
+    font-family:'Fraunces',serif;font-size:15px;font-weight:600;
+    color:var(--gold-soft);letter-spacing:.02em;
+    transition:color .2s var(--ease);
+    padding:0;
+  }
+  .author-ctx-link::before{content:'← ';font-size:13px;opacity:.6}
+  .author-ctx-link:hover{color:var(--parchment)}
   .tab-panel{display:none}
   .tab-panel.active{display:block;animation:fadeIn .35s ease}
 
@@ -1344,6 +1362,12 @@
       <button class="tab-btn active" onclick="wrocDoMiejscowosci('v-tab-artists')">Pisarze</button>
       <button class="tab-btn" onclick="wrocDoMiejscowosci('v-tab-kontakt')">Kontakt</button>
     </div>
+    <!-- Rząd 1 alt: nazwisko artysty (desktop, widoczny gdy wiersz jest otwarty) -->
+    <div class="author-ctx-bar hidden" id="author-ctx-bar">
+      <button class="author-ctx-link" id="author-ctx-link" onclick="wrocDoAutora()">
+        <span id="author-ctx-name"></span>
+      </button>
+    </div>
     <!-- Rząd 2: zakładki pisarza -->
     <div class="tabs">
       <button class="tab-btn active" data-tab="a-tab-bio" onclick="switchTab(this)">Biografia</button>
@@ -1900,9 +1924,11 @@ function render(){
   // DESKTOP: klasa mapa-full-detail gdy pełna mapa + panel nie-home
   const desktopFullDetail = _fullMap && !czyUrzadzeniePrzenosne() && stan.panel !== 'home';
   document.body.classList.toggle('mapa-full-detail', desktopFullDetail);
-  // ukryj pasek nawigacji miejscowości — pokaże się tylko w bloku 'author' gdy trzeba
+  // ukryj paski kontekstowe — pokażą się tylko w odpowiednich blokach
   const _ctxT = document.getElementById('village-ctx-tabs');
   if(_ctxT) _ctxT.classList.add('hidden');
+  const _actxB = document.getElementById('author-ctx-bar');
+  if(_actxB) _actxB.classList.add('hidden');
   if(stan.panel === 'home'){
     pokazPanel('home');
     ustawZdjecie(null);
@@ -2033,6 +2059,14 @@ function render(){
       rysujMiejscowosci();
       rysujWierszeAutora(a);
       centrujNadWierszem(w, stan.slug);
+
+      // pokaż pasek z nazwiskiem artysty zamiast village-ctx-tabs
+      const authorBar = document.getElementById('author-ctx-bar');
+      const authorName = document.getElementById('author-ctx-name');
+      if(authorBar && a){
+        authorName.textContent = a.imie_nazwisko;
+        authorBar.classList.remove('hidden');
+      }
     } else {
       // TELEFON / nie-fullmap → stare zachowanie
       zamknijPoemOverlay();
@@ -3024,6 +3058,12 @@ document.addEventListener('visibilitychange', ()=>{
 let _introZamkniete = false;
 
 /* ============ POEM OVERLAY (desktop) ============ */
+
+/* powrót z wiersza do profilu autora (desktop author-ctx-bar) */
+function wrocDoAutora(){
+  if(stan.panel !== 'poem') return;
+  zamknijPoemOverlay();
+}
 
 /* powrót z pisarza do miejscowości (desktop village-context-tabs) */
 function wrocDoMiejscowosci(tabId){

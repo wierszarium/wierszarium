@@ -58,8 +58,8 @@
   .topbar .hamburger-btn{position:absolute;left:28px;top:50%;transform:translateY(-50%)}
   .topbar .crumbs{position:absolute;right:28px;top:50%;transform:translateY(-50%)}
   .brand{display:flex;flex-direction:column;gap:2px;align-items:center;text-align:center}
-  .brand .display{font-size:22px;color:var(--parchment)}
-  .brand .meta{color:var(--gold-soft)}
+  .brand .display{font-size:42px;color:var(--parchment);font-weight:600}
+  .brand .meta{color:var(--gold-soft);font-size:15px;letter-spacing:.08em}
   .crumbs{display:flex;align-items:center;gap:8px}
   #btn-cala-mapa{position:relative}
   #btn-fullmap{
@@ -196,17 +196,17 @@
     to{opacity:0}
   }
   .crumbs button{
-    background:none;border:1px solid rgba(243,234,214,.25);color:var(--parchment);
-    padding:6px 14px;border-radius:var(--r-sm);font-family:'JetBrains Mono',monospace;font-size:12px;
+    background:none;border:2px solid rgba(243,234,214,.3);color:var(--parchment);
+    padding:12px 24px;border-radius:var(--r-md);font-family:'JetBrains Mono',monospace;font-size:18px;
     letter-spacing:.05em;transition:border-color .25s var(--ease), background .25s var(--ease);
   }
   .crumbs button:hover{border-color:var(--gold-soft);background:rgba(201,162,39,.1)}
   .crumbs button:disabled{opacity:.25;pointer-events:none}
   .crumbs button.btn-back{
     display:flex;align-items:center;justify-content:center;
-    width:42px;height:42px;padding:0;flex-shrink:0;
+    width:64px;height:64px;padding:0;flex-shrink:0;
   }
-  .crumbs button.btn-back svg{width:24px;height:24px;color:var(--parchment);transition:color .25s var(--ease)}
+  .crumbs button.btn-back svg{width:36px;height:36px;color:var(--parchment);transition:color .25s var(--ease)}
   .crumbs button.btn-back:hover svg{color:var(--gold-soft)}
   .crumbs button.btn-back:hover{background:rgba(201,162,39,.14)}
 
@@ -471,13 +471,13 @@
   @media(min-width:721px){
     .hamburger-btn{
       display:flex;align-items:center;justify-content:center;
-      width:42px;height:42px;padding:0;margin-right:12px;flex-shrink:0;
-      background:none;border:1px solid rgba(243,234,214,.25);border-radius:var(--r-sm);
+      width:64px;height:64px;padding:0;margin-right:12px;flex-shrink:0;
+      background:none;border:2px solid rgba(243,234,214,.3);border-radius:var(--r-md);
       color:var(--parchment);cursor:pointer;
       transition:border-color .25s var(--ease),background .25s var(--ease);
     }
     .hamburger-btn:hover{border-color:var(--gold-soft);background:rgba(201,162,39,.1)}
-    .hamburger-btn svg{width:20px;height:20px}
+    .hamburger-btn svg{width:34px;height:34px}
   }
   /* overlay */
   .hm-overlay{
